@@ -17,6 +17,7 @@ export const pool = new Pool({
   user: "postgres",
   host: "postgres",
   database: "maksmebel",
+  password: "123456"
 });
 
 async function connectToRedis() {
