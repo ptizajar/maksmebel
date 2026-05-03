@@ -1,0 +1,42 @@
+version: "1.0"
+
+services:
+  web_server:
+    build: .
+    container_name: web_server
+    ports:
+      - "3001:3001"
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - /var/images:/var/images
+    environment:
+      POSTGRES_PASSWORD: "123456"
+
+  redis:
+    image: redis
+
+    container_name: redis
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_DB: maksmebel
+ 
+
+
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - web_server
+
+
+
