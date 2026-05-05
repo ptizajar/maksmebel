@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "../components/Toast";
 import { CategoryCard } from "../components/CategoryCard";
 import c from "../css/.module/categoryCard.module.css"
 import l from "../css/.module/layout.module.css";
@@ -37,16 +38,7 @@ export function Catalog() {
           ></CategoryCard>
         ))}
       </div>
-      {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
-      )}
+      <Toast message={error} onClose={() => setError("")}/>
     </>
   );
 

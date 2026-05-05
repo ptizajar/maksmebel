@@ -4,7 +4,8 @@ import { ItemCard } from "./ItemCard";
 import { showDialog } from "./Dialog";
 import { AddItemForm } from "./AddItemForm";
 import i from "../css/.module/itemCard.module.css"
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "./Toast";
 export function AdminItemCard({ item_id, name, price, onClose, liked, removed, length, width, height, }) {
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -54,16 +55,7 @@ export function AdminItemCard({ item_id, name, price, onClose, liked, removed, l
           <button className={`${i.adminButton} ${i.deleteButton}`}  onClick={deleteItem} >Удалить</button>
         </div>
       </div>
-      {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
-      )}</>
+        <Toast message={error} onClose={() => setError("")}/></>
   );
 }
 

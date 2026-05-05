@@ -22,6 +22,10 @@
   white-space: nowrap;
 }
 
+.titleNoMargin {
+  margin-top: 0;
+}
+
 @media (max-width: 550px){
   .title{
     font-size: 20px;

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
 import f from "../css/.module/form.module.css"
 import { useValidation } from "../validation/useValidation";
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "./Toast";
 
 export function AddItemForm({ onCloseClick, param }) {//получает из Dialog
     const [isSubmitting, setIsSubmitting] = useState(false);//проверять находится ли форма в процессе отправки на сервер
@@ -82,23 +83,23 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
         clearErrors();
         onCloseClick();
     }
-    // Определяем, какую картинку показывать: новую выбранную, старую из БД или ничего
+    // Определяем, какую картинку показывать: новую выбранную, старую или ничего
     const getBackgroundImage = () => {
         if (preview) return `url('${preview}')`;
-        if (param?.item_id) return `url('$/api/item/image/${param.item_id}')`;
+        if (param?.item_id) return `url('/api/item/image/${param.item_id}')`;
         return 'none';
     };
-    // const style = param ? { backgroundImage: `url('/api/item/image/${item?.item_id}')` } : {};
+
     const style = { backgroundImage: getBackgroundImage() };
 
     return (
         <>
-            <form className={f.form} style={{ width: "500px" }} onSubmit={save} id="addItemForm" method="PUT" encType="multipart/form-data">
+            <form className={`${f.form} ${f.formFixedWidth}`} onSubmit={save} id="addItemForm" method="PUT" encType="multipart/form-data">
                 <p className={f.title}>{param.item_id ? "Редактировать товар" : "Добавить товар"}</p>
                 <div className={f.twoColumns}>
                     <div className={f.column}>
-                        <div className={f.inputHolder} style={{ marginTop: "0" }}>
-                            <label className={f.label} >Артикул</label>
+                        <div className={`${f.inputHolder} ${f.noMarginTop}`}>
+                            <label className={`${f.label} ${f.labelRequired}`}>Артикул</label>
                             <input
                                 type="text"
                                 className={f.field}
@@ -110,16 +111,16 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                 disabled={isSubmitting} />
                         </div>
                         {errors.item_article?.length > 0 && (
-                            <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                            <div className={f.errorText}>
                                 {errors.item_article[0]}
 
                             </div>
                         )}
                         <div className={f.inputHolder}>
-                            <label className={f.label}>Название</label>
+                            <label className={`${f.label} ${f.labelRequired}`}>Название</label>
                             <input
                                 type="text"
-                                className={f.field}
+                                 className={f.field}
                                 name="item_name"
                                 required
                                 defaultValue={item?.item_name}
@@ -128,13 +129,13 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                 disabled={isSubmitting} />
                         </div>
                         {errors.item_name?.length > 0 && (
-                            <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                            <div className={f.errorText}>
                                 {errors.item_name[0]}
 
                             </div>
                         )}
                         <div className={f.inputHolder}>
-                            <label className={f.label}>Длина</label>
+                            <label className={`${f.label} ${f.labelRequired}`}>Длина</label>
                             <input
                                 type="number"
                                 pattern="[0-9]*"
@@ -145,7 +146,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                 disabled={isSubmitting} />
                         </div>
                         <div className={f.inputHolder}>
-                            <label className={f.label}>Ширина</label>
+                            <label className={`${f.label} ${f.labelRequired}`}>Ширина</label>
                             <input
                                 type="number"
                                 pattern="[0-9]*"
@@ -156,7 +157,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                 disabled={isSubmitting} />
                         </div>
                         <div className={f.imageHolder}>
-                            <label className={f.label}>Изображение</label>
+                            <label className={`${f.label} ${f.labelRequired}`}>Изображение</label>
                             <div className={f.image} style={style}>
                                 <input
                                     className={f.fileInput}
@@ -169,8 +170,8 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                         </div>
                     </div>
                     <div className={f.column}>
-                        <div className={f.inputHolder} style={{ marginTop: "0" }}>
-                            <label className={f.label}>Высота</label>
+                        <div className={`${f.inputHolder} ${f.noMarginTop}`}>
+                            <label className={`${f.label} ${f.labelRequired}`}>Высота</label>
                             <input
                                 type="number"
                                 pattern="[0-9]*"
@@ -181,7 +182,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                 disabled={isSubmitting} />
                         </div>
                         <div className={f.inputHolder}>
-                            <label className={f.label}>Заказ от</label>
+                            <label className={`${f.label} ${f.labelRequired}`}>Заказ от</label>
                             <input
                                 type="number"
                                 pattern="[0-9]*"
@@ -192,7 +193,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                 disabled={isSubmitting} />
                         </div>
                         <div className={f.inputHolder}>
-                            <label className={f.label}>Цена</label>
+                            <label className={`${f.label} ${f.labelRequired}`}>Цена</label>
                             <input
                                 type="number"
                                 pattern="[0-9]*"
@@ -216,7 +217,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                 disabled={isSubmitting} />
                         </div>
                         {errors.item_description?.length > 0 && (
-                            <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                            <div className={f.errorText}>
                                 {errors.item_description[0]}
                             </div>
                         )}
@@ -234,16 +235,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                         </div>
                     </div>
                 </div>
-                {/* <div className={f.checkboxHolder}>
-                    <label className={f.label} htmlFor="checkbox">Отображать на главной</label>
-                    <input
-                        id="checkbox"
-                        type="checkbox"
-                        name="show"
-                        defaultChecked={item?.show}
-                        disabled={isSubmitting}>
-                    </input>
-                </div> */}
+           
 
                 <input type="hidden" name="item_id" value={param.item_id} />
                 <input type="hidden" name="category_id" value={param.category_id} />
@@ -268,16 +260,6 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                     </button>
                 </div>
             </form >
-            {error && (
-                <div className="toast-notification">
-                    <div className="toast-content">
-                        <span className="toast-message">{error}</span>
-                        <button onClick={() => setError("")} className="toast-close">×</button>
-                    </div>
-                    {/* Прогресс-бар для автоскрытия */}
-                    <div className="toast-progress"></div>
-                </div>
-            )
-            }</>
+             <Toast message={error} onClose={() => setError("")}/></>
     );
 }

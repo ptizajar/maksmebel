@@ -7,7 +7,8 @@ import a from "../css/.module/admin.module.css";
 import { showDialog } from "../components/Dialog";
 import i from "../css/.module/itemCard.module.css"
 import { forAdminOnly } from "../components/ForAdminOnly";
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "../components/Toast";
 import { setUser } from "../store";
 import { useDispatch } from "react-redux";
 
@@ -67,9 +68,9 @@ function AdminCategory() {
     <>
 
       <div className={a.adminContainer}>
-        <h1 className={l.title} style={{ marginTop: "0px" }}>{categoryName}</h1>
+        <h1 className={`${l.title} ${l.titleNoMargin}`}>{categoryName}</h1>
         <button className={a.adminButton} onClick={() => showDialog(AddItemForm, { category_id }, loadItems)}>Добавить товар</button>
-        <button className={a.adminButton} style={{justifySelf:"end"}} onClick={logout}>Выйти</button>
+        <button className={`${a.adminButton} ${a.selfEnd}`} onClick={logout}>Выйти</button>
       </div>
 
 
@@ -91,16 +92,7 @@ function AdminCategory() {
 
         ))}
       </div>
-      {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
-      )}
+      <Toast message={error} onClose={() => setError("")}/>
     </>
   );
 }

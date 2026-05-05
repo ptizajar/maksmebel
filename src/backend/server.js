@@ -101,7 +101,6 @@ app.get("/api/category/:id/items", async function (req, res) {
 // });
 
 
-
 app.get("/api/item/:id", async function (req, res) {
   try {
     const param = req.params.id;
@@ -118,8 +117,8 @@ app.get("/api/item/:id", async function (req, res) {
 app.get("/api/showed_items", async function (req, res) {
   try {
     const result = await pool.query(
-      "select item_id,item_name,article,length,width,height,price,description,quantity from item where show=$1 ",
-      [true],
+      "select item_id,item_name,article,length,width,height,price,description,quantity from item where show=$1 and removed=$2",
+      [true, false],
     );
     if (req.user?.user_id) {
       const liked = (
@@ -387,3 +386,4 @@ app.get("/*splat", (req, res) => {
 });
 
 app.listen(3001);
+

@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/toast.css"
 import i from "../css/.module/itemCard.module.css";
 import l from "../css/.module/layout.module.css";
 import a from "../css/.module/admin.module.css";
 import f from "../css/.module/form.module.css";
+import t from "../css/.module/toast.module.css";
 import { OrderCard } from "../components/OrderCard";
 import { showDialog } from "../components/Dialog";
 import { EditUserForm } from "../components/EditUserForm";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store";
 import { SessionExpired } from "../components/SessionExpired";
+import { Toast } from "../components/Toast";
 
 
 export function Account() {
@@ -152,16 +153,15 @@ export function Account() {
     <>
       <h1 className={l.title}>Аккаунт</h1>
       <div className={f.userData}>
-        <p className={f.labelBold}><b style={{ fontWeight: "bold" }}>Имя:</b> {userData.user_name} </p>
-        <p className={f.labelBold}><b style={{ fontWeight: "bold" }}>Компания:</b> {userData?.company} </p>
-        <p className={f.labelBold}><b style={{ fontWeight: "bold" }}>Номер телефона:</b> {userData.phone} </p>
-        <p className={f.labelBold}><b style={{ fontWeight: "bold" }}>Email:</b> {userData.email}</p>
+        <p className={f.labelBold}><b>Имя:</b> {userData.user_name} </p>
+        <p className={f.labelBold}><b>Компания:</b> {userData?.company} </p>
+        <p className={f.labelBold}><b>Номер телефона:</b> {userData.phone} </p>
+        <p className={f.labelBold}><b>Email:</b> {userData.email}</p>
       </div>
       <div className={a.adminButtonContainer}>
         <button className={a.adminButton} onClick={() => showDialog(EditUserForm, undefined, loadOrNavigate)}>Редактировать</button>
         <button className={a.adminButton} onClick={logout}>Выйти</button>
-        <button className={`${i.adminButton} ${i.deleteButton}`}
-          style={{ width: "fit-content", paddingLeft: "10px", paddingRight: "10px" }}
+        <button  className={`${i.adminButton} ${i.deleteButton} ${a.adminButtonNarrow}`}
           onClick={deleteAcc}>Удалить аккаунт</button>
       </div>
 
@@ -183,16 +183,7 @@ export function Account() {
           ></OrderCard>
         ))}
       </div>
-      {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
-      )}
+       <Toast message={error} onClose={() => setError("")}/>
     </>
 
   );
