@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import h from "../css/.module/header.module.css";
-import "../css/toast.css";
 import { LoginForm } from "./LoginForm";
 import { showDialog } from "./Dialog";
 import { useSelector } from "react-redux";
@@ -18,7 +17,7 @@ export function Header() {
           <Link to={"/"} className={`${h.link} ${h.linkLogo}`}>
             <li className={`${h.item} ${h.itemLogo}`}>
                <div className={h.logoContent}>
-              <img src="/public/logo.svg" className={h.iconLogo}></img>
+              <img src="/public/m-logo2.svg" className={h.iconLogo}></img>
              <span>МАКС-МЕБЕЛЬ</span>
              </div>
             </li>

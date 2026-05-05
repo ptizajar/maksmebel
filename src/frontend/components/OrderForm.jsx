@@ -1,11 +1,12 @@
 import f from "../css/.module/form.module.css"
 import { useState } from "react";
 import { useValidation } from "../validation/useValidation";
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
 import { showDialog } from "./Dialog";
 import { useSelector } from "react-redux";
 import React from "react";
 import { SessionExpired } from "./SessionExpired";
+import { Toast } from "./Toast";
 
 
 export function OrderForm({ onCloseClick, param }) {
@@ -90,7 +91,7 @@ export function OrderForm({ onCloseClick, param }) {
             <form className={f.form} onSubmit={save} id="orderForm" method="POST" encType="multipart/form-data">
                 <p className={f.title}>Оформить заявку</p>
                 <div className={f.inputHolder}>
-                    <label className={f.label}>
+                    <label className={`${f.label} ${f.labelRequired}`}>
                         Как к Вам обращаться?
                     </label>
                     <input
@@ -105,12 +106,12 @@ export function OrderForm({ onCloseClick, param }) {
                         disabled={isSubmitting} />
                 </div>
                 {errors.user_name?.length > 0 && (
-                    <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                    <div className={f.errorText}>
                         {errors.user_name[0]}
                     </div>
                 )}
 
-                <div className={f.inputHolder}>
+                <div className={`${f.label} ${f.labelRequired}`}>
                     <label className={f.label}>
                         Номер телефона
                     </label>
@@ -126,14 +127,14 @@ export function OrderForm({ onCloseClick, param }) {
                         disabled={isSubmitting} />
                 </div>
                 {errors.phone?.length > 0 && (
-                    <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                    <div className={f.errorText}>
                         {errors.phone[0]}
                     </div>
                 )}
 
 
                 <div className={f.inputHolder}>
-                    <label className={f.label}>
+                    <label className={`${f.label} ${f.labelRequired}`}>
                         Удобные дата и время (МСК):
                     </label>
 
@@ -146,14 +147,13 @@ export function OrderForm({ onCloseClick, param }) {
                         // max={getMaxDateTime()}
                         required
                         disabled={isSubmitting}
-                        style={{ width: '100%' }}
                         onChange={(e) => checkField('preferred_datetime', e.target.value)}
                         onBlur={(e) => checkField('preferred_datetime', e.target.value)}
                     />
 
 
                     {errors.preferred_datetime?.length > 0 && (
-                        <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                        <div className={f.errorText}>
                             {errors.preferred_datetime[0]}
                         </div>
                     )}
@@ -184,15 +184,7 @@ export function OrderForm({ onCloseClick, param }) {
                 </div>
             </form>
 
-            {error && (
-                <div className="toast-notification">
-                    <div className="toast-content">
-                        <span className="toast-message">{error}</span>
-                        <button onClick={() => setError("")} className="toast-close">×</button>
-                    </div>
-                    <div className="toast-progress"></div>
-                </div>
-            )}
+            <Toast message={error} onClose={() => setError("")}/>
         </>
     )
 }

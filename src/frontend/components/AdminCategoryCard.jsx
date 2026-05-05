@@ -4,7 +4,8 @@ import {CategoryCard} from "./CategoryCard";
 import { AddCategoryForm } from "./AddCategoryForm";
 import { showDialog } from "./Dialog";
 import c from "../css/.module/categoryCard.module.css"
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "./Toast";
 
 export function AdminCategoryCard({ category_id, name, onClose }) {
   const [error, setError] = useState("");
@@ -33,16 +34,7 @@ export function AdminCategoryCard({ category_id, name, onClose }) {
           <button className={c.adminButton} onClick={deleteCategory}>Удалить</button>
         </div>
       </div>
-      {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
-      )}</>
+        <Toast message={error} onClose={() => setError("")}/></>
   );
 }
 

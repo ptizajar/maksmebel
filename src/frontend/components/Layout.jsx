@@ -3,7 +3,7 @@ import {Footer} from "./Footer";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import l from "../css/.module/layout.module.css";
-function Layout() {
+export function Layout() {
   return (
     <div className={l.layout}>
       <Header />

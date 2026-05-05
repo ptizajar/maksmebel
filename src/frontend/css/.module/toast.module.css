@@ -1,5 +1,5 @@
 /* Стили для toast-уведомления внизу */
-.toast-notification {
+.toastNotification {
   position: fixed;
   bottom: 20px;
   left: 50%;
@@ -16,22 +16,22 @@
   animation: slideUp 0.3s ease-out;
 }
 
-.toast-content {
+.toastContent {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
 }
 
-.toast-message {
-  font-family: Arial, Helvetica, sans-serif;
+.toastMessage {
+  font-family: 'Exo 2', sans-serif;
   font-size: 14px;
   line-height: 1.4;
   margin-right: 16px;
   flex: 1;
 }
 
-.toast-close {
+.toastClose {
   background: none;
   border: none;
   color: white;
@@ -48,12 +48,12 @@
   flex-shrink: 0;
 }
 
-.toast-close:hover {
+.toastClose:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Прогресс-бар для автоскрытия */
-.toast-progress {
+.toastProgress {
   height: 3px;
   background-color: rgba(255, 255, 255, 0.5);
   width: 100%;
@@ -81,8 +81,7 @@
   }
 }
 
-/* Анимация исчезновения */
-.toast-notification.fade-out {
+.fadeOut {
   animation: slideDown 0.3s ease-in forwards;
 }
 

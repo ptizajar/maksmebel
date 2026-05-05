@@ -7,7 +7,8 @@ import c from "../css/.module/categoryCard.module.css";
 import l from "../css/.module/layout.module.css";
 import a from "../css/.module/admin.module.css";
 import { forAdminOnly } from "../components/ForAdminOnly";
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "../components/Toast";
 import { setUser } from "../store";
 import { useDispatch } from "react-redux";
 
@@ -52,11 +53,11 @@ function Admin() {
   return (
     <>
       <div className={a.adminContainer}>
-        <h1 className={l.title} style={{ marginTop: "0px" }}>Администрирование</h1>
-        <button className={a.adminButton} style={{marginLeft:"10px"}} onClick={() => showDialog(AddCategoryForm, undefined, load)}>
+        <h1 className={`${l.title} ${l.titleNoMargin}`}>Администрирование</h1>
+        <button className={`${a.adminButton} ${a.ml10}`} onClick={() => showDialog(AddCategoryForm, undefined, load)}>
           Добавить категорию
         </button>
-        <button className={a.adminButton} onClick={logout} style={{justifySelf:"end"}}>Выйти</button>
+        <button className={`${a.adminButton} ${a.selfEnd}`} onClick={logout} >Выйти</button>
       </div>
 
       <div className={c.cardHolder}>
@@ -69,16 +70,7 @@ function Admin() {
           ></AdminCategoryCard>
         ))}
       </div>
-      {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
-      )}
+      <Toast message={error} onClose={() => setError("")}/>
     </>
 
   );

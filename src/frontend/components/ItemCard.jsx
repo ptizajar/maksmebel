@@ -7,6 +7,8 @@ import { SessionExpired } from "./SessionExpired";
 import { setUser } from "../store";
 import { LoginForm } from "./LoginForm";
 import { Heart } from "lucide-react";
+import { Toast } from "./Toast";
+import t from "../css/.module/toast.module.css";
 export function ItemCard({ item_id, name, price, liked, length, width, height, removed }) {
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
@@ -57,29 +59,6 @@ export function ItemCard({ item_id, name, price, liked, length, width, height, r
   const style = removed ? { filter: "grayscale(100%)" } : {};
   return (
     <>
-      {/* <Link className={i.card} to={`/item/${item_id}`}>
-         <div className={`${i.imageHolder} ${removed ? i.removed : ""}`}>
-        <img
-          className={i.image}
-          src={`/api/item/image/${item_id}`}
-          alt="товар"
-        />
-
-        {removed && <div className={i.badge}>Скрыт</div>}
-
-        <button className={i.icon} onClick={like}>
-          {currentLiked ? (
-            <Heart size={30} strokeWidth={2} fill="#2A3E3C" color="#2A3E3C" />
-          ) : (
-            <Heart size={30} strokeWidth={2} color="#2A3E3C" />
-          )}
-        </button>
-
-      </div>
-        <p className={i.name}>{name}</p>
-        <p className={i.size}>{length} х {width} х {height} см</p>
-        <p className={i.price}>{price} ₽</p>
-      </Link> */}
 
       <Link className={i.card} to={`/item/${item_id}`}>
 
@@ -108,23 +87,10 @@ export function ItemCard({ item_id, name, price, liked, length, width, height, r
       </Link>
 
       {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
+        <Toast message={error} onClose={() => setError("")}/>
       )}
       {toast && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{toast}</span>
-            <button onClick={() => setToast("")} className="toast-close">×</button>
-          </div>
-          <div className="toast-progress"></div>
-        </div>
+         <Toast message={toast} onClose={() => setToast("")}/>
       )}
     </>
   );

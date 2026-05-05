@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import f from "../css/.module/form.module.css"
+import f from "../css/.module/form.module.css";
+import t from "../css/.module/toast.module.css";
+import { Toast } from "./Toast";
 export function OrderCard({ order_id, email, user_name, item_id, article, price, recall, phone, status, company, date, onStatusChange }) {
     const currentUser = useSelector((state) => state.user.currentUser);
     const [error, setError] = useState("");
@@ -37,9 +39,9 @@ export function OrderCard({ order_id, email, user_name, item_id, article, price,
 
     return (
         <>
-            <div className={f.form} style={{ width: "280px", padding: "30px 25px" }}>
-                <p className={f.title} style={{ fontSize: "20px" }}>Заявка от </p>
-                <p className={f.title} style={{ fontSize: "20px" }}>{date} </p>
+            <div className={`${f.form} ${f.formCard}`}>
+                <p className={`${f.title} ${f.titleSmall}`}>Заявка от </p>
+                <p className={`${f.title} ${f.titleSmall}`}>{date} </p>
 
                 {currentUser?.is_admin && (
                     <div className={f.inputHolder}>
@@ -67,7 +69,7 @@ export function OrderCard({ order_id, email, user_name, item_id, article, price,
 
                 <div className={f.inputHolder}>
                     <span className={f.label}>Товар</span>
-                    <Link to={`/item/${item_id}`} className={f.field} style={{ display: "block", color: "black" }}>
+                    <Link to={`/item/${item_id}`} className={`${f.field} ${f.linkField}`}>
                         {article}
                     </Link>
                 </div>
@@ -92,7 +94,7 @@ export function OrderCard({ order_id, email, user_name, item_id, article, price,
                     <div className={f.buttonHolder}>
                         {status === 'Оформлен' && (
                             <>
-                                <button className={f.button} style={{ width: "fit-content" }} onClick={confirmed}>Подтвердить</button>
+                                <button className={`${f.button} ${f.buttonFit}`} onClick={confirmed}>Подтвердить</button>
                                 <button className={f.button} onClick={canceled}>Отменить</button>
                             </>
                         )}
@@ -106,39 +108,8 @@ export function OrderCard({ order_id, email, user_name, item_id, article, price,
                     </div>
                 )}
             </div>
-            {/* <div className={i.card} >
-                {currentUser?.is_admin && <><span>Email</span>
-                    <p className={i.name}>{email}</p></>}
-                <span>Имя</span>
-                <p className={i.name}>{user_name}</p>
-                <span>Номер телефона</span>
-                <p className={i.name}>{phone}</p>
-                <span>Товар</span>
-                <Link to={`/item/${item_id}`} className={i.name}>{article}</Link>
-                <span>Цена</span>
-                <p className={i.name}>{price}</p>
-                <span>Когда перезвонить</span>
-                <p className={i.name}>{recall}</p>
-                <span>Статус</span>
-                <p className={i.name}>{status}</p>
-                {currentUser?.is_admin && status === 'Оформлен' &&
-                    <>
-                        <button onClick={confirmed}>Подтверждено</button>
-                        <button onClick={canceled}>Отменено</button>
-                    </>}
-                {currentUser?.is_admin && status === 'Подтвержден' && <button onClick={canceled}>Отменено</button>}
-            </div> */}
-
-            {error && (
-                <div className="toast-notification">
-                    <div className="toast-content">
-                        <span className="toast-message">{error}</span>
-                        <button onClick={() => setError("")} className="toast-close">×</button>
-                    </div>
-                    <div className="toast-progress"></div>
-                </div>
-            )}
-
+           
+            <Toast message={error} onClose={() => setError("")}/>
         </>
     );
 }

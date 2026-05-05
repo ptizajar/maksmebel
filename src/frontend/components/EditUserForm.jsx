@@ -1,13 +1,14 @@
 import f from "../css/.module/form.module.css"
 import { useState } from "react";
 import { useValidation } from "../validation/useValidation";
-import "../css/toast.css"
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUser } from "../store";
 import { showDialog } from "./Dialog";
 import { SessionExpired } from "./SessionExpired";
 import { useNavigate } from "react-router-dom";
+import t from "../css/.module/toast.module.css";
+import { Toast } from "./Toast";
 
 
 export function EditUserForm({ onCloseClick }) {//получает из Dialog
@@ -24,7 +25,6 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
         const formObject = {
             user_name: formData.get('user_name'),
             phone: formData.get('phone'),
-            email: formData.get('email'),
             company: formData.get('company')
         };
         const isValid = checkForm(formObject);
@@ -59,7 +59,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
             <form className={f.form} onSubmit={save} id="editUserForm" method="PUT" encType="multipart/form-data">
                 <p className={f.title}>Редактировать</p>
                 <div className={f.inputHolder}>
-                    <label className={f.label}>Имя</label>
+                    <label className={`${f.label} ${f.labelRequired}`}>Имя</label>
                     <input
                         type="text"
                         className={f.field}
@@ -71,25 +71,8 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                         disabled={isSubmitting} />
                 </div>
                 {errors.user_name?.length > 0 && (
-                    <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                    <div className={f.errorText}>
                         {errors.user_name[0]}
-                    </div>
-                )}
-                <div className={f.inputHolder}>
-                    <label className={f.label}>Email</label>
-                    <input
-                        type="text"
-                        className={f.field}
-                        name="email"
-                        required
-                        defaultValue={currentUser?.email}
-                        onChange={(e) => checkField('email', e.target.value)}
-                        onBlur={(e) => checkField('email', e.target.value)}//потеря фокуса
-                        disabled={isSubmitting} />
-                </div>
-                {errors.email?.length > 0 && (
-                    <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
-                        {errors.email[0]}
                     </div>
                 )}
                  <div className={f.inputHolder}>
@@ -103,7 +86,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                         disabled={isSubmitting} />
                 </div>
                 <div className={f.inputHolder}>
-                    <label className={f.label}>Телефон</label>
+                    <label className={`${f.label} ${f.labelRequired}`}>Телефон</label>
                     <input
                         type="text"
                         className={f.field}
@@ -115,7 +98,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                         disabled={isSubmitting} />
                 </div>
                 {errors.phone?.length > 0 && (
-                    <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                    <div className={f.errorText}>
                         {errors.phone[0]}
                     </div>
                 )}
@@ -140,16 +123,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                     </button>
                 </div>
             </form>
-            {error && (
-                <div className="toast-notification">
-                    <div className="toast-content">
-                        <span className="toast-message">{error}</span>
-                        <button onClick={() => setError("")} className="toast-close">×</button>
-                    </div>
-                    {/* Прогресс-бар для автоскрытия */}
-                    <div className="toast-progress"></div>
-                </div>
-            )}
+              <Toast message={error} onClose={() => setError("")}/>
         </>
     )
 }

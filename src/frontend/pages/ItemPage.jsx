@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "../components/Toast";
 import { OrderForm } from "../components/OrderForm";
 import { showDialog } from "../components/Dialog";
 import { setUser } from "../store";
@@ -99,27 +100,14 @@ export function ItemPage() {
         </div>
       </div>
 
-      <div className={h.info} style={{ marginLeft: "5%", width: "90%", marginTop: "35px" }}>{item?.description}</div>
+      <div className={`${h.info} ${h.infoWide}`}>{item?.description}</div>
 
 
       {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
+        <Toast message={error} onClose={() => setError("")}/>
       )}
       {toast && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{toast}</span>
-            <button onClick={() => setToast("")} className="toast-close">×</button>
-          </div>
-          <div className="toast-progress"></div>
-        </div>
+         <Toast message={toast} onClose={() => setToast("")}/>
       )}
     </>
   );

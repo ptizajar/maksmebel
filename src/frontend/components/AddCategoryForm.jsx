@@ -1,8 +1,8 @@
 import f from "../css/.module/form.module.css"
-
 import { useState, useEffect } from "react";
 import { useValidation } from "../validation/useValidation";
-import "../css/toast.css"
+import { Toast } from "./Toast";
+import t from "../css/.module/toast.module.css";
 import React from "react";
 
 
@@ -12,7 +12,7 @@ export function AddCategoryForm({ onCloseClick, param }) {//получает и�
     const [preview, setPreview] = useState(null);
     const { errors, checkField, checkForm, clearErrors } = useValidation('category');
 
-   // Очистка памяти от временной ссылки при размонтировании
+    // Очистка памяти от временной ссылки при размонтировании
     useEffect(() => {
         return () => { if (preview) URL.revokeObjectURL(preview); };
     }, [preview]);
@@ -56,23 +56,24 @@ export function AddCategoryForm({ onCloseClick, param }) {//получает и�
         clearErrors();
         onCloseClick();
     }
-// Определяем, какую картинку показывать: новую выбранную, старую из БД или ничего
+    // Определяем, какую картинку показывать: новую выбранную, старую  или ничего
     const getBackgroundImage = () => {
         if (preview) return `url('${preview}')`;
         if (param?.category_id) return `url('/api/category/image/${param.category_id}')`;
         return 'none';
     };
     const style = { backgroundImage: getBackgroundImage() };
-    // const style = param ? { backgroundImage: `url(/api/category/image/${param?.category_id}')` } : {};
     return (
         <>
             <form className={f.form} onSubmit={save} id="addCategoryForm" method="PUT" encType="multipart/form-data">
                 <p className={f.title}>{param ? "Редактировать категорию" : "Добавить категорию"}</p>
                 <div className={f.inputHolder}>
-                    <label className={f.label}>Название</label>
+                    <label className={`${f.label} ${f.labelRequired}`}>
+                        Название
+                    </label>
                     <input
                         type="text"
-                        className={f.field}
+                       className={f.field}
                         name="category_name"
                         required
                         defaultValue={param?.name}
@@ -81,12 +82,12 @@ export function AddCategoryForm({ onCloseClick, param }) {//получает и�
                         disabled={isSubmitting} />
                 </div>
                 {errors.category_name?.length > 0 && (
-                    <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                    <div className={f.errorText}>
                         {errors.category_name[0]}
                     </div>
                 )}
                 <div className={f.inputHolder}>
-                    <label className={f.label}>Изображение</label>
+                    <label className={`${f.label} ${f.labelRequired}`}>Изображение</label>
                     <div className={f.image} style={style}>
                         <input
                             className={f.fileInput}
@@ -97,7 +98,7 @@ export function AddCategoryForm({ onCloseClick, param }) {//получает и�
                             onChange={handleImageChange} />
                     </div>
                 </div>
-        
+
                 <input type="hidden" name="category_id" value={param?.category_id} />
 
                 <div className={f.buttonHolder}>
@@ -120,16 +121,9 @@ export function AddCategoryForm({ onCloseClick, param }) {//получает и�
                     </button>
                 </div>
             </form>
-            {error && (
-                <div className="toast-notification">
-                    <div className="toast-content">
-                        <span className="toast-message">{error}</span>
-                        <button onClick={() => setError("")} className="toast-close">×</button>
-                    </div>
-                    {/* Прогресс-бар для автоскрытия */}
-                    <div className="toast-progress"></div>
-                </div>
-            )}
+
+            <Toast message={error} onClose={() => setError("")} />
+
         </>
     )
 }

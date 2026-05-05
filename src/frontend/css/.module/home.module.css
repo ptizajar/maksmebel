@@ -65,7 +65,11 @@
     color: #2A3E3C;
     font-weight: 700;
 }
-
+.infoWide {
+  margin-left: 5%;
+  width: 90%;
+  margin-top: 35px;
+}
 .adressInfo {
     width: 45%;
     display: flex;
