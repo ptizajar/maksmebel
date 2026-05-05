@@ -14,7 +14,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: "front.js",
+    filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "dist/static"),
     clean: true,
     publicPath: "/",
