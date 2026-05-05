@@ -110,7 +110,14 @@ authRouter.post("/registrate", upload.none(), async function (req, res) {
     } else {
       const result = await pool.query(
         "INSERT INTO users ( email, password, user_name, phone, is_admin, company) values ($1, $2, $3, $4, $5, $6)  RETURNING user_id, user_name, phone, is_admin, email, company",
-        [email, hashPasswordMD5(password), user_name, phone.trim(), false, company],
+        [
+          email,
+          hashPasswordMD5(password),
+          user_name,
+          phone.trim(),
+          false,
+          company,
+        ],
       );
       const cookie = crypto.randomBytes(64).toString("hex");
       const currentUser = result.rows[0];
@@ -123,7 +130,6 @@ authRouter.post("/registrate", upload.none(), async function (req, res) {
         .cookie("sessionId", cookie, {
           httpOnly: true, //защита от xss атак
           sameSite: "strict", // Защита от CSRF
-          //secure: process.env.NODE_ENV === 'production',
           maxAge: sessionTTL * 1000, // Конвертируем в миллисекунды
         })
         .json(currentUser);
@@ -172,7 +178,6 @@ authRouter.post("/login", upload.none(), async function (req, res) {
       .cookie("sessionId", cookie, {
         httpOnly: true, //защита от xss атак
         sameSite: "strict", // Защита от CSRF
-        //secure: process.env.NODE_ENV === 'production',
         maxAge: sessionTTL * 1000, // Конвертируем в миллисекунды
       })
       .json(currentUser);
@@ -193,7 +198,6 @@ authRouter.post("/logout", async function (req, res) {
       .clearCookie("sessionId", {
         httpOnly: true, //защита от xss атак
         sameSite: "strict", // Защита от CSRF
-        //secure: process.env.NODE_ENV === 'production',
       })
       .json({});
   } catch (err) {
@@ -229,12 +233,38 @@ authRouter.put("/edit_user", upload.none(), async function (req, res) {
     const userId = req.user?.user_id;
     const newName = req.body.user_name;
     const newPhone = req.body.phone;
-    const email = req.body.email;
-    const company=req.body.company;
+    const company = req.body.company;
+    const errors = [];
+
+    // Имя
+    !user_name && errors.push("Имя обязательно");
+    user_name?.trim().length < 2 &&
+      errors.push("Имя должно быть не менее 2 символов");
+    user_name?.trim().length > 50 &&
+      errors.push("Имя должно быть не более 50 символов");
+    user_name &&
+      !/^[а-яА-ЯёЁ\s\-]+$/.test(user_name.trim()) &&
+      errors.push("Имя может содержать только кириллицу, пробелы и дефисы");
+
+    // Телефон
+    !phone && errors.push("Телефон обязателен");
+    phone &&
+      !/^(\+7|8)/.test(phone) &&
+      errors.push("Номер должен начинаться с +7 или 8");
+    const digitsOnly = phone?.replace(/\D/g, "");
+    digitsOnly?.length !== 11 && errors.push("Номер должен содержать 11 цифр");
+    digitsOnly &&
+      !/^[78]/.test(digitsOnly) &&
+      errors.push("Первая цифра номера должна быть 7 или 8");
+
+    // Если есть ошибки валидации - сразу возвращаем
+    if (errors.length > 0) {
+      return res.status(400).json({ error: errors.join(". ") });
+    }
 
     const result = await pool.query(
-      "UPDATE users SET user_name=$1, phone=$2, email=$3, company=$4 WHERE user_id=$5 returning user_id, email, user_name, phone, company, is_admin",
-      [newName, newPhone, email, company, userId],
+      "UPDATE users SET user_name=$1, phone=$2, company=$3 WHERE user_id=$4 returning user_id, user_name, phone, company, is_admin",
+      [newName, newPhone, company, userId],
     );
 
     const updatedUser = result.rows[0];
@@ -260,11 +290,17 @@ authRouter.put("/send_code", upload.none(), async function (req, res) {
       }
     }
     const currentUser = await pool.query(
-      "select user_id from users where email=$1",
+      "select user_id, is_admin from users where email=$1",
       [email],
     );
+
     if (currentUser.rows.length === 0) {
       res.status(400).json({ error: "Вы не зарегистрированы" });
+      return;
+    }
+    console.log(currentUser.rows[0].is_admin);
+    if (currentUser.rows[0].is_admin) {
+      res.status(400).json({ error: "Администраторам нельзя менять пароль" });
       return;
     }
 
@@ -293,7 +329,8 @@ authRouter.put("/change_password", upload.none(), async function (req, res) {
         return;
       }
     }
-    if (!codeInfo) {//чтобы нельзя было ввести чужой email
+    if (!codeInfo) {
+      //чтобы нельзя было ввести чужой email
       res.status(400).json({ error: "Неверный email" });
       return;
     }

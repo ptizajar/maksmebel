@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import l from "../css/.module/layout.module.css";
 import h from "../css/.module/home.module.css";
 import i from "../css/.module/itemCard.module.css"
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "../components/Toast";
 import { MapPin } from "lucide-react";
 
 export function Home() {
@@ -69,16 +70,7 @@ export function Home() {
           </div>
         </div>
       </div>
-      {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
-      )}
+      <Toast message={error} onClose={() => setError("")}/>
     </>
   );
 }

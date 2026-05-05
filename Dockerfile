@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3001
 
 # Команда запуска
-CMD ["npm", "run", "start-back-dev"]
+CMD ["npm", "run", "start-back-prod"]

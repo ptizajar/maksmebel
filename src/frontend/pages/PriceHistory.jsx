@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { forAdminOnly } from "../components/ForAdminOnly";
 import l from "../css/.module/layout.module.css";
-import t from "../css/.module/priceHistory.module.css";
+import p from "../css/.module/priceHistory.module.css";
+import t from "../css/.module/toast.module.css";
  function PriceHistory() {
     const { item_id } = useParams();
     const [error, setError] = useState("");
@@ -38,7 +39,7 @@ import t from "../css/.module/priceHistory.module.css";
     const itemName = prices[0]?.item_name;
     return <>
      <h1 className={l.title}> {itemName}</h1> 
-            <table className={t.table}>
+            <table className={p.table}>
                 <thead>
                     <tr>
                         <th>Дата</th>
@@ -55,16 +56,7 @@ import t from "../css/.module/priceHistory.module.css";
                 </tbody>
             </table>
 
-        {error && (
-            <div className="toast-notification">
-                <div className="toast-content">
-                    <span className="toast-message">{error}</span>
-                    <button onClick={() => setError("")} className="toast-close">×</button>
-                </div>
-                {/* Прогресс-бар для автоскрытия */}
-                <div className="toast-progress"></div>
-            </div>
-        )}
+        <Toast message={error} onClose={() => setError("")}/>
     </>;
 }
 

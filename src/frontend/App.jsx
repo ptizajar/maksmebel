@@ -1,7 +1,6 @@
 import React, { useEffect} from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import {Home} from "./pages/Home";
-import {Politics} from "./pages/Politics";
 import {Catalog} from "./pages/Catalog";
 import {Category} from "./pages/Category";
 import {Favourites} from "./pages/Favourites";
@@ -27,7 +26,6 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> }, // тоже самое что и path:""
       { path: "favourites", element: <Favourites /> },
-      // { path: "politics", element: <Politics /> },
       { path: "catalog", element: <Catalog /> },
       { path: "category/:category_id", element: <Category /> },
       { path: "item/:item_id", element: <ItemPage /> },

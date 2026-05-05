@@ -2,7 +2,6 @@ import React from "react"
 import f from "../css/.module/form.module.css"
 import { showDialog } from "./Dialog";
 import { LoginForm } from "./LoginForm";
-import "../css/toast.css"
 
 
 export function SessionExpired({ onCloseClick }) {

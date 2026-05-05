@@ -1,7 +1,9 @@
 import React, { useState } from "react"
 import f from "../css/.module/form.module.css"
-import "../css/toast.css"
 import { useValidation } from "../validation/useValidation"
+import { Eye, EyeClosed } from "lucide-react";
+import t from "../css/.module/toast.module.css";
+import { Toast } from "./Toast";
 
 
 
@@ -54,7 +56,7 @@ export function ChangePassword({ onCloseClick }) {
         if (!isValid) return;
         setIsSubmitting(true);
         const res = await fetch(`/api/send_code`, {
-            method: 'POST',
+            method: 'PUT',
             body: formData
         });
         if (!res.ok) {
@@ -75,71 +77,84 @@ export function ChangePassword({ onCloseClick }) {
         <>
             <form className={f.form} onSubmit={sent ? confirm : send} id="changePassword" method="POST" encType="multipart/form-data">
                 {sent ? <p className={f.title}>Мы выслали код на email</p> : <p className={f.title}>Подтверждение</p>}
-                {/* <div className={f.inputHolder}>
-                    <label className={f.label} hidden={sent}>Email</label>
-                    <input type="text" className={f.field} placeholder="email" name="email" required hidden={sent}
-                        onChange={(e) => handleChange('email', e.target.value)}
-                        onBlur={(e) => handleBlur('email', e.target.value)} />
-                </div> */}
+        
                 {!sent && (
-                <div className={f.inputHolder}>
-                    <label className={f.label}>Email</label>
-                    <input 
-                        type="text" 
-                        className={f.field} 
-                        name="email" 
-                        required 
-                        onBlur={(e) => checkField('email', e.target.value)} 
-                        onChange={(e) => checkField('email', e.target.value)}
-                    />
-                </div>
-            )}
+                    <div className={f.inputHolder}>
+                        <label className={f.label}>Email</label>
+                        <input
+                            type="text"
+                            className={f.field}
+                            name="email"
+                            required
+                            onBlur={(e) => checkField('email', e.target.value)}
+                            onChange={(e) => checkField('email', e.target.value)}
+                        />
+                    </div>
+                )}
                 {errors.email?.length > 0 && (
-                    <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                    <div className={f.errorText}>
                         {errors.email[0]}
                     </div>
                 )}
                 {sent && <>
                     <div className={f.inputHolder}>
                         <label className={f.label}>Код</label>
-                        <input type="text" className={f.field}  name="code" required />
+                        <input type="text" className={f.field} name="code" required />
                     </div>
-                    <div className={f.inputHolder}>
+                    <div className={`${f.inputHolder} ${f.passwordWrapper}`}>
                         <label className={f.label}>Пароль</label>
-                        <input type={showPasswords ? "text" : "password"} className={f.field} name="password" required
+                        <input
+                            type={showPasswords ? "text" : "password"}
+                            className={`${f.field} ${f.fieldPassword}`}
+                            name="password"
+                            required
+                            disabled={isSubmitting}
                             onChange={(e) => checkField('password', e.target.value)}
                             onBlur={(e) => checkField('password', e.target.value)}
                         />
+
+                        <button
+                            type="button"
+                            onClick={() => setShowPasswords(!showPasswords)}
+                            disabled={isSubmitting}
+                            className={f.togglePasswordBtn}
+                        >
+                            {showPasswords
+                                ? <Eye size={18} strokeWidth={2.5} color="#2A3E3C" />
+                                : <EyeClosed size={18} strokeWidth={2.5} color="#2A3E3C" />
+                            }
+                        </button>
                     </div>
                     {errors.password?.length > 0 && (
-                        <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>
+                        <div className={f.errorText}>
                             {errors.password[0]}
                         </div>
                     )}
-                    <div className={f.inputHolder}>
+                    <div className={`${f.inputHolder} ${f.passwordWrapper}`}>
                         <label className={f.label}>Повторите пароль</label>
-                        <input type={showPasswords ? "text" : "password"} className={f.field} name="password2" required />
-                    </div>
-                    <div className={f.checkboxHolder}>
-                        <label className={f.label} htmlFor="checkbox">Показать пароль</label>
                         <input
-                            type="checkbox"
-                            id="checkbox"
-                            checked={showPasswords}
-                            onChange={(e) => setShowPasswords(e.target.checked)}
+                            type={showPasswords ? "text" : "password"}
+                            className={`${f.field} ${f.fieldPassword}`}
+                            name="password2"
+                            required
                             disabled={isSubmitting}
-                            style={{ marginRight: '8px', width: 'auto' }}
                         />
+
+                        <button
+                            type="button"
+                            onClick={() => setShowPasswords(!showPasswords)}
+                            disabled={isSubmitting}
+                            className={f.togglePasswordBtn}
+                        >
+                            {showPasswords
+                                ? <Eye size={18} strokeWidth={2.5} color="#2A3E3C" />
+                                : <EyeClosed size={18} strokeWidth={2.5} color="#2A3E3C" />
+                            }
+                        </button>
                     </div>
+
                 </>}
 
-                {/* <div className={f.buttonHolder}>
-                    {sent ?
-                        <button className={f.button} type="submit" onClick={confirm}>Подтвердить</button>
-                        : <button className={f.button} type="submit" onClick={send}>Выслать код</button>
-                    }
-                    <button className={f.button} onClick={() => { onCloseClick('navigate') }}>Отмена</button>
-                </div> */}
                 <div className={f.buttonHolder}>
                     <button className={f.button} type="submit">
                         {sent ? "Подтвердить" : "Выслать код"}
@@ -149,15 +164,6 @@ export function ChangePassword({ onCloseClick }) {
                     </button>
                 </div>
             </form>
-            {error && (
-                <div className="toast-notification">
-                    <div className="toast-content">
-                        <span className="toast-message">{error}</span>
-                        <button onClick={() => setError("")} className="toast-close">×</button>
-                    </div>
-                    {/* Прогресс-бар для автоскрытия */}
-                    <div className="toast-progress"></div>
-                </div>
-            )}</>
+            <Toast message={error} onClose={() => setError("")}/></>
     )
 }

@@ -1,6 +1,7 @@
 import { forAdminOnly } from "../components/ForAdminOnly";
 import React, { useEffect, useState } from "react";
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
+import { Toast } from "../components/Toast";
 import { OrderCard } from "../components/OrderCard";
 import l from "../css/.module/layout.module.css";
 import a from "../css/.module/admin.module.css";
@@ -16,22 +17,7 @@ function Bids() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [status, setStatus] = useState('Оформлен');
-  // async function filterOrders(status) {
-  //   const res = await fetch(`/api/admin/filterOrders?status=${status}`, {
-  //     method: 'GET',
-  //   });
-  //   if (!res.ok) {
-  //     const err = await res.json();
-  //     setError(err.error);
-  //     setTimeout(() => setError(""), 5000);
-  //     return;
-  //   }
-  //   const data = await res.json();
-  //   setBids(data);
-  // }
-  // useEffect(() => {
-  //   filterOrders('Оформлен');
-  // }, [])
+
 
   async function fetchAllOrders() {
     const res = await fetch(`/api/admin/bids`);
@@ -47,14 +33,7 @@ function Bids() {
     setBids(defaultFiltered);
   }
 
-  // function filterOrders(status) {
-  //   if (status === 'Все') {
-  //     setBids(allBids);
-  //   } else {
-  //     const filtered = allBids.filter(bid => bid.status === status);
-  //     setBids(filtered);
-  //   }
-  // }
+
   function applyFilters(status) {
     let filtered = [...allBids];
 
@@ -110,8 +89,7 @@ function Bids() {
 
         <span className={fm.label}>Начало периода</span>
         <input
-          className={fm.field}
-          style={{ maxWidth: "200px", marginTop: "0" }}
+          className={`${fm.field} ${fm.dateInput}`}
           type="date"
           value={startDate}
           name="startDate"
@@ -119,26 +97,13 @@ function Bids() {
         />
         <span className={fm.label}>Конец периода</span>
         <input
-          className={fm.field}
-          style={{ maxWidth: "200px", marginTop: "0" }}
+          className={`${fm.field} ${fm.dateInput}`}
           type="date"
           value={endDate}
           name="endDate"
           onChange={(e) => setEndDate(e.target.value)}
         />
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          className={a.adminButton}
-          style={{ paddingTop: "5px" }}
-          name="dateSelect"
-        >
-          <option value="Оформлен">Оформленные</option>
-          <option value="Подтвержден">Подтвержденные</option>
-          <option value="Отменен">Отмененные</option>
-          <option value="Выполнен">Выполненные</option>
-          <option value="Все">Все</option>
-        </select>
+
         <button className={a.adminButton} onClick={applyFilters}>
           Применить
         </button>
@@ -147,8 +112,22 @@ function Bids() {
         </button>
 
       </div>
+      <div className={a.adminButtonContainer}>
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          className={`${a.adminButton} ${a.selectFix}`}
+          name="dateSelect"
+        >
+          <option value="Оформлен">Оформленные</option>
+          <option value="Подтвержден">Подтвержденные</option>
+          <option value="Отменен">Отмененные</option>
+          <option value="Выполнен">Выполненные</option>
+          <option value="Все">Все</option>
+        </select>
+      </div>
       {bids.length === 0 && <div className={f.noFavourites}>Заказов нет</div>}
-      <div className={i.cardHolder}>
+      <div className={`${i.cardHolder} ${i.cardHolderSmallMargin}`}>
         {bids.map((bid) => (
           <OrderCard
             key={bid.order_id}
@@ -167,16 +146,7 @@ function Bids() {
           ></OrderCard>
         ))}
       </div>
-      {error && (
-        <div className="toast-notification">
-          <div className="toast-content">
-            <span className="toast-message">{error}</span>
-            <button onClick={() => setError("")} className="toast-close">×</button>
-          </div>
-          {/* Прогресс-бар для автоскрытия */}
-          <div className="toast-progress"></div>
-        </div>
-      )}
+      <Toast message={error} onClose={() => setError("")}/>
     </>
 
   );

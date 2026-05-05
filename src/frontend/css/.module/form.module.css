@@ -1,11 +1,10 @@
 .form {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     border: 3px solid #2A3E3C;
     border-radius: 15px;
     align-items: center;
-    /* gap: 25px; */
     width: 100%;
     min-width: 280px;
     height: auto;
@@ -40,6 +39,11 @@
     color: #2A3E3C;
     font-family: 'Exo 2', sans-serif;
     font-size: 16px;
+}
+
+.labelRequired::after {
+    content: " *";
+    color: red;
 }
 
 .labelBold {
@@ -99,7 +103,7 @@
     border-radius: 10px;
     width: 100%;
     height: 30px;
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 5px;
     font-family: 'Exo 2', sans-serif;
 }
@@ -218,24 +222,28 @@ input:-moz-autofill {
 
 /* Поле пароля — отступ справа под глазик (в процентах от ширины) */
 .fieldPassword {
-    padding-right: 12%;        /* основной отступ — адаптивный */
+    padding-right: 12%;
+    /* основной отступ — адаптивный */
     box-sizing: border-box;
 }
 
 /* Кнопка с глазом — позиционирование в процентах */
 .togglePasswordBtn {
     position: absolute;
-    right: 4%;                 /* отступ от правого края */
-    top: 52%;                  /* чуть ниже середины, чтобы компенсировать padding */
+    right: 4%;
+    /* отступ от правого края */
+    top: 55%;
+    /* чуть ниже середины, чтобы компенсировать padding */
     background: none;
     border: none;
     cursor: pointer;
-    padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 120%;           /* размер иконки относительно шрифта */
+    font-size: 120%;
+    /* размер иконки относительно шрифта */
 }
+
 .checkboxConsent {
     display: flex;
     align-items: center;
@@ -257,10 +265,66 @@ input:-moz-autofill {
     user-select: none;
 }
 
+.checkboxInputCustom {
+    margin-right: 8px;
+    width: auto;
+}
+
+.formFixedWidth {
+    width: 500px;
+}
+
+.noMarginTop {
+    margin-top: 0;
+}
+
+.buttonCenter {
+    justify-content: center;
+}
+
+.buttonWide {
+    width: 70%;
+}
+
+.marginTop10 {
+    margin-top: 10px;
+}
+
+/* Карточка заявки (OrderCard) */
+.formCard {
+    width: 280px;
+    padding: 20px;
+}
+
+/* Уменьшенный заголовок (для дат и карточек) */
+.titleSmall {
+    font-size: 20px;
+}
+
+/* Ссылка как поле (товар) */
+.linkField {
+    color: #2A3E3C;
+    /* text-decoration: none; */
+}
+
+/* текст согласия */
+.consentText {
+    font-size: 12px;
+    max-width: 300px;
+    margin-top: 10px;
+}
+
+
+
+/* Кнопка по содержимому */
+.buttonFit {
+    width: fit-content;
+}
 
 /* Стили для кнопки в отключённом состоянии */
 .button:disabled {
-    background-color: #8A9E9C;    /* более тусклый цвет */
+    background-color: #8A9E9C;
+    /* более тусклый цвет */
     color: #E3E0DA;
     opacity: 0.75;
     cursor: not-allowed;
@@ -270,15 +334,29 @@ input:-moz-autofill {
 
 /* Дополнительно: лёгкое затемнение при hover на активной кнопке */
 .button:not(:disabled):hover {
-    background-color: #131f1e;   /* чуть темнее основной цвет */
+    background-color: #131f1e;
+    /* чуть темнее основной цвет */
     transform: translateY(-1.5px);
     transition: all 0.2s ease;
 }
 
+.dateInput {
+  max-width: 200px;
+  margin-top: 0;
+}
 
-@media (max-width:400px){
-    .title{
+/* Ошибка под полем */
+.errorText {
+    color: #B71C1C;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+
+@media (max-width:400px) {
+    .title {
         font-size: 20px;
     }
-    
+
 }

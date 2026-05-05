@@ -5,8 +5,9 @@ import { RegistrationForm } from "./RegistrationForm";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store";
 import { ChangePassword } from "./ChangePassword";
-import "../css/toast.css"
+import t from "../css/.module/toast.module.css";
 import { Eye, EyeClosed } from "lucide-react";
+import { Toast } from "./Toast";
 
 
 export function LoginForm({ onCloseClick }) {
@@ -77,44 +78,20 @@ export function LoginForm({ onCloseClick }) {
                         }
                     </button>
                 </div>
-                {/* <div className={f.inputHolder}>
-                    <label className={f.label}>Пароль</label>
-                    <input type={showPasswords ? "text" : "password"} className={f.field}  name="password" required />
-                </div>
 
-                <div className={f.checkboxHolder}>
-                    <label className={f.label} htmlFor="checkbox">Показать пароль </label>
-                    <input
-                        type="checkbox"
-                        id="checkbox"
-                        checked={showPasswords}
-                        onChange={(e) => setShowPasswords(e.target.checked)}
-                        disabled={isSubmitting}
-                        style={{ marginRight: '8px', width: 'auto' }}
-                    />
-                </div> */}
                 <div className={f.buttonHolder}>
                     <button className={f.button} type="submit">ОК</button>
                     <button className={f.button} onClick={onCloseClick}>Отмена</button>
                 </div>
-                <div className={f.buttonHolder} style={{ justifyContent: "center" }}>
-                    <button className={f.button} style={{ width: "70%" }} onClick={() => switchForm(ChangePassword)}>Не помню пароль</button>
+                <div className={`${f.buttonHolder} ${f.buttonCenter}`}>
+                    <button className={`${f.button} ${f.buttonWide}`} onClick={() => switchForm(ChangePassword)}>Не помню пароль</button>
                 </div>
 
-                <p className={f.label} style={{ marginTop: "10px" }}>Ещё нет аккаунта?</p>
-                <div className={f.buttonHolder} style={{ justifyContent: "center" }}>
-                    <button className={f.button} style={{ width: "70%" }} onClick={() => switchForm(RegistrationForm)}>Зарегистрироваться</button>
+                <p className={`${f.label} ${f.marginTop10}`}>Ещё нет аккаунта?</p>
+                <div className={`${f.buttonHolder} ${f.buttonCenter}`}>
+                    <button className={`${f.button} ${f.buttonWide}`} onClick={() => switchForm(RegistrationForm)}>Зарегистрироваться</button>
                 </div>
             </form>
-            {error && (
-                <div className="toast-notification">
-                    <div className="toast-content">
-                        <span className="toast-message">{error}</span>
-                        <button onClick={() => setError("")} className="toast-close">×</button>
-                    </div>
-                    {/* Прогресс-бар для автоскрытия */}
-                    <div className="toast-progress"></div>
-                </div>
-            )}</>
+            <Toast message={error} onClose={() => setError("")}/></>
     )
 }
