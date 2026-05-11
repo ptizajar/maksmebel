@@ -87,6 +87,16 @@ export const validationRules = {
   },
 
   registration: {
+    phone: {
+      custom: [
+        (value) => {
+          if (!value || value.includes("_")) {
+            return "Введите номер телефона";
+          }
+          return null;
+        },
+      ],
+    },
     user_name: {
       min: 2,
       max: 50,
@@ -106,28 +116,6 @@ export const validationRules = {
         (value) => {
           if (/\s\s+/.test(value))
             return "Нельзя использовать несколько пробелов подряд";
-          return null;
-        },
-      ],
-    },
-
-    phone: {
-      pattern: /^[+\s\-\(\)0-9]+$/,
-      patternError:
-        "Номер может содержать только цифры, пробелы, скобки, дефисы и знак +",
-      custom: [
-        (value) => {
-          if (!/^(\+7|8)/.test(value)) {
-            return "Номер должен начинаться с +7 или 8";
-          }
-          return null;
-        },
-        (value) => {
-          // Проверяем количество цифр
-          const digitsOnly = value.replace(/\D/g, "");
-          if (digitsOnly.length !== 11) {
-            return "Номер должен содержать 11 цифр";
-          }
           return null;
         },
       ],
@@ -181,6 +169,16 @@ export const validationRules = {
   },
 
   order: {
+    phone: {
+      custom: [
+        (value) => {
+          if (!value || value.includes("_")) {
+            return "Введите номер телефона";
+          }
+          return null;
+        },
+      ],
+    },
     user_name: {
       min: 2,
       max: 50,
@@ -200,27 +198,6 @@ export const validationRules = {
         (value) => {
           if (/\s\s+/.test(value))
             return "Нельзя использовать несколько пробелов подряд";
-          return null;
-        },
-      ],
-    },
-
-    phone: {
-      pattern: /^[+\s\-\(\)0-9]+$/,
-      patternError:
-        "Номер может содержать только цифры, пробелы, скобки, дефисы и знак +",
-      custom: [
-        (value) => {
-          if (!/^(\+7|8)/.test(value)) {
-            return "Номер должен начинаться с +7 или 8";
-          }
-          return null;
-        },
-        (value) => {
-          const digitsOnly = value.replace(/\D/g, "");
-          if (digitsOnly.length !== 11) {
-            return "Номер должен содержать 11 цифр";
-          }
           return null;
         },
       ],
@@ -252,7 +229,7 @@ export const validationRules = {
         (value) => {
           const selected = new Date(value);
           const maxDate = new Date();
-          maxDate.setDate(maxDate.getDate() + 14);
+          maxDate.setDate(maxDate.getDate() + 30);
           maxDate.setHours(16, 59, 0, 0);
 
           if (selected > maxDate) {

@@ -7,19 +7,22 @@
     align-items: center;
     width: 100%;
     min-width: 280px;
+    max-width: 350px;
     height: auto;
-    gap: 10px;
-    padding: 30px 10%;
+    gap: 8px;
+    padding: 20px 10%;
     background-color: white;
-}
 
+    box-sizing: border-box;
+
+}
 
 
 .title {
     color: #2A3E3C;
     font-family: 'Exo 2', sans-serif;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
     white-space: nowrap;
 }
@@ -38,7 +41,7 @@
 .label {
     color: #2A3E3C;
     font-family: 'Exo 2', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .labelRequired::after {
@@ -56,6 +59,7 @@
 .userData {
     border: 2px solid #2A3E3C;
     width: 26%;
+    min-width: 280px;
     padding: 15px;
     background-color: #E3E0DA;
     border-radius: 15px;
@@ -133,7 +137,7 @@
     border-radius: 10px;
     font-family: 'Exo 2', sans-serif;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
     white-space: nowrap;
     padding-left: 8px;
@@ -270,8 +274,12 @@ input:-moz-autofill {
     width: auto;
 }
 
-.formFixedWidth {
+.wideForm {
     width: 500px;
+
+    margin: 0 auto;
+
+    box-sizing: border-box;
 }
 
 .noMarginTop {
@@ -284,6 +292,7 @@ input:-moz-autofill {
 
 .buttonWide {
     width: 70%;
+    min-width: fit-content;
 }
 
 .marginTop10 {
@@ -304,7 +313,7 @@ input:-moz-autofill {
 /* Ссылка как поле (товар) */
 .linkField {
     color: #2A3E3C;
-    /* text-decoration: none; */
+    display: inline;
 }
 
 /* текст согласия */
@@ -341,8 +350,8 @@ input:-moz-autofill {
 }
 
 .dateInput {
-  max-width: 200px;
-  margin-top: 0;
+    max-width: 200px;
+    margin-top: 0;
 }
 
 /* Ошибка под полем */
@@ -351,12 +360,58 @@ input:-moz-autofill {
     font-family: 'Exo 2', sans-serif;
     font-size: 13px;
     margin-top: 5px;
+
 }
 
+
+
+:global(.react-datepicker-wrapper) {
+    width: 100%;
+}
+
+:global(.react-datepicker__input-container input) {
+    width: 100%;
+}
+
+:global(.react-datepicker-popper) {
+    z-index: 9999;
+}
+
+:global(.react-datepicker__input-container) {
+    width: 100%;
+}
+
+:global(.react-datepicker) {
+    border: 2px solid #d9d9d9;
+    border-radius: 15px;
+    font-family: 'Exo 2', sans-serif;
+}
+
+:global(.react-datepicker__month-container) {
+    float: none;
+}
+
+:global(.react-datepicker__time-container) {
+    float: none;
+}
+
+.datePickerWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.calendarIcon {
+    position: absolute;
+    right: 14px;
+    top: 30%;
+    width: 18px;
+    height: 18px;
+    color: #2A3E3C;
+    pointer-events: none;
+}
 
 @media (max-width:400px) {
     .title {
         font-size: 20px;
     }
-
 }

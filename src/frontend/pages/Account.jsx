@@ -12,12 +12,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store";
 import { SessionExpired } from "../components/SessionExpired";
 import { Toast } from "../components/Toast";
+import { Loader } from "../components/Loader";
+import ld from "../css/.module/loader.module.css"
 
 
 export function Account() {
   const [bids, setBids] = useState([]);
   const [userData, setUserData] = useState({});
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -38,16 +41,19 @@ export function Account() {
         dispatch(setUser(null));
         navigate('/')
       });
+      setIsLoading(false);
       return;
     }
     if (!res.ok && res.status !== 401) {
       const err = await res.json();
       setError(err.error);
       setTimeout(() => setError(""), 5000);
+      setIsLoading(false);
       return;
     }
     const data = await res.json();
     setBids(data);
+    setIsLoading(false);
   }
 
   async function loadData() {
@@ -161,29 +167,33 @@ export function Account() {
       <div className={a.adminButtonContainer}>
         <button className={a.adminButton} onClick={() => showDialog(EditUserForm, undefined, loadOrNavigate)}>Редактировать</button>
         <button className={a.adminButton} onClick={logout}>Выйти</button>
-        <button  className={`${i.adminButton} ${i.deleteButton} ${a.adminButtonNarrow}`}
+        <button className={`${i.adminButton} ${i.deleteButton} ${a.adminButtonNarrow}`}
           onClick={deleteAcc}>Удалить аккаунт</button>
       </div>
 
       <h1 className={l.title} >Заявки</h1>
-      <div className={i.cardHolder}>
-        {bids.map((bid) => (
-          <OrderCard
-            key={bid.order_id}
-            order_id={bid.order_id}
-            user_name={bid.user_name}
-            item_id={bid.item_id}
-            article={bid.article}
-            price={bid.price}
-            recall={formatDate(bid.recall_date)}
-            phone={bid.phone}
-            status={bid.status}
-            date={formatDate(bid.date)}
-            onClose={loadBids}
-          ></OrderCard>
-        ))}
-      </div>
-       <Toast message={error} onClose={() => setError("")}/>
+      {isLoading && (
+        <Loader />
+      )}
+      {!isLoading &&
+        <div className={i.cardHolder}>
+          {bids.map((bid) => (
+            <OrderCard
+              key={bid.order_id}
+              order_id={bid.order_id}
+              user_name={bid.user_name}
+              item_id={bid.item_id}
+              article={bid.article}
+              price={bid.price}
+              recall={formatDate(bid.recall_date)}
+              phone={bid.phone}
+              status={bid.status}
+              date={formatDate(bid.date)}
+              onClose={loadBids}
+            ></OrderCard>
+          ))}
+        </div>}
+      <Toast message={error} onClose={() => setError("")} />
     </>
 
   );

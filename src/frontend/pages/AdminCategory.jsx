@@ -11,6 +11,8 @@ import t from "../css/.module/toast.module.css";
 import { Toast } from "../components/Toast";
 import { setUser } from "../store";
 import { useDispatch } from "react-redux";
+import { Loader } from "../components/Loader";
+import ld from "../css/.module/loader.module.css"
 
 function AdminCategory() {
   const { category_id } = useParams();
@@ -18,7 +20,8 @@ function AdminCategory() {
   const [categoryName, setCategoryName] = useState(null);
   const [items, setItems] = useState([]);
   const dispatch = useDispatch();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   async function loadCategory() {
     const res = await fetch(`/api/category/${category_id}`);
@@ -26,6 +29,7 @@ function AdminCategory() {
       const err = await res.json();
       setError(err.error);
       setTimeout(() => setError(""), 5000);
+      setIsLoading(false);
       return;
     }
     const data = await res.json();
@@ -38,10 +42,12 @@ function AdminCategory() {
       const err = await res.json();
       setError(err.error);
       setTimeout(() => setError(""), 5000);
+      setIsLoading(false);
       return;
     }
     const data = await res.json();
     setItems(data);
+    setIsLoading(false);
   }
   async function logout(e) {
     e.preventDefault();
@@ -72,27 +78,29 @@ function AdminCategory() {
         <button className={a.adminButton} onClick={() => showDialog(AddItemForm, { category_id }, loadItems)}>Добавить товар</button>
         <button className={`${a.adminButton} ${a.selfEnd}`} onClick={logout}>Выйти</button>
       </div>
+      {isLoading && (
+        <Loader />
+      )}
+      {!isLoading &&
+        <div className={i.cardHolder}>
+          {items.map((item) => (
 
+            <AdminItemCard
+              key={item.item_id}
+              item_id={item.item_id}
+              name={item.item_name}
+              price={item.price}
+              width={Math.round(item.width)}
+              height={Math.round(item.height)}
+              length={Math.round(item.length)}
+              liked={item.liked}
+              onClose={loadItems}
+              removed={item.removed}
+            ></AdminItemCard>
 
-      <div className={i.cardHolder}>
-        {items.map((item) => (
-
-          <AdminItemCard
-            key={item.item_id}
-            item_id={item.item_id}
-            name={item.item_name}
-            price={item.price}
-            width={Math.round(item.width)}
-            height={Math.round(item.height)}
-            length={Math.round(item.length)}
-            liked={item.liked}
-            onClose={loadItems}
-            removed={item.removed}
-          ></AdminItemCard>
-
-        ))}
-      </div>
-      <Toast message={error} onClose={() => setError("")}/>
+          ))}
+        </div>}
+      <Toast message={error} onClose={() => setError("")} />
     </>
   );
 }

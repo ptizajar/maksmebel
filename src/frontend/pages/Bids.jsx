@@ -8,6 +8,8 @@ import a from "../css/.module/admin.module.css";
 import i from "../css/.module/itemCard.module.css";
 import f from "../css/.module/favourites.module.css";
 import fm from "../css/.module/form.module.css";
+import { Loader } from "../components/Loader";
+import ld from "../css/.module/loader.module.css"
 
 
 function Bids() {
@@ -16,6 +18,7 @@ function Bids() {
   const [error, setError] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
   const [status, setStatus] = useState('Оформлен');
 
 
@@ -25,12 +28,14 @@ function Bids() {
       const err = await res.json();
       setError(err.error);
       setTimeout(() => setError(""), 5000);
+       setIsLoading(false);
       return;
     }
     const data = await res.json();
     setAllBids(data);
     const defaultFiltered = data.filter(bid => bid.status === 'Оформлен');
     setBids(defaultFiltered);
+     setIsLoading(false);
   }
 
 
@@ -126,7 +131,10 @@ function Bids() {
           <option value="Все">Все</option>
         </select>
       </div>
-      {bids.length === 0 && <div className={f.noFavourites}>Заказов нет</div>}
+      {isLoading && (
+              <Loader />
+            )}
+      {!isLoading && bids.length === 0 && <div className={f.noFavourites}>Заказов нет</div>}
       <div className={`${i.cardHolder} ${i.cardHolderSmallMargin}`}>
         {bids.map((bid) => (
           <OrderCard
