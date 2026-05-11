@@ -9,6 +9,7 @@ import { SessionExpired } from "./SessionExpired";
 import { useNavigate } from "react-router-dom";
 import t from "../css/.module/toast.module.css";
 import { Toast } from "./Toast";
+import InputMask from "react-input-mask";
 
 
 export function EditUserForm({ onCloseClick }) {//получает из Dialog
@@ -75,7 +76,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                         {errors.user_name[0]}
                     </div>
                 )}
-                 <div className={f.inputHolder}>
+                <div className={f.inputHolder}>
                     <label className={f.label}>Компания</label>
                     <input
                         type="text"
@@ -87,7 +88,25 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                 </div>
                 <div className={f.inputHolder}>
                     <label className={`${f.label} ${f.labelRequired}`}>Телефон</label>
-                    <input
+                    <InputMask
+                        mask="+7 (999) 999-99-99"
+                        alwaysShowMask={true}
+                        maskChar="_"
+                        disabled={isSubmitting}
+                        onChange={(e) => checkField('phone', e.target.value)}
+                        onBlur={(e) => checkField('phone', e.target.value)}
+                    >
+                        {(inputProps) => (
+                            <input
+                                {...inputProps}
+                                type="tel"
+                                className={f.field}
+                                name="phone"
+                                required
+                            />
+                        )}
+                    </InputMask>
+                    {/* <input
                         type="text"
                         className={f.field}
                         name="phone"
@@ -95,7 +114,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                         defaultValue={currentUser?.phone}
                         onChange={(e) => checkField('phone', e.target.value)}
                         onBlur={(e) => checkField('phone', e.target.value)}//потеря фокуса
-                        disabled={isSubmitting} />
+                        disabled={isSubmitting} /> */}
                 </div>
                 {errors.phone?.length > 0 && (
                     <div className={f.errorText}>
@@ -109,7 +128,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                         type="submit"
                         disabled={isSubmitting}
                     >
-                       ОК
+                        ОК
                     </button>
                     <button
                         className={f.button}
@@ -123,7 +142,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                     </button>
                 </div>
             </form>
-              <Toast message={error} onClose={() => setError("")}/>
+            <Toast message={error} onClose={() => setError("")} />
         </>
     )
 }

@@ -8,6 +8,7 @@ import { useValidation } from "../validation/useValidation";
 import { Eye, EyeClosed } from "lucide-react";
 import { Toast } from "./Toast";
 import t from "../css/.module/toast.module.css";
+import InputMask from "react-input-mask";
 
 export function RegistrationForm({ onCloseClick }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -116,14 +117,24 @@ export function RegistrationForm({ onCloseClick }) {
                 )}
                 <div className={f.inputHolder}>
                     <label className={`${f.label} ${f.labelRequired}`}>Номер телефона</label>
-                    <input
-                        type="tel"
-                        className={f.field}
-                        name="phone"
+                    <InputMask
+                        mask="+7 (999) 999-99-99"
+                        alwaysShowMask={true}
+                        maskChar="_"
+                        disabled={isSubmitting}
                         onChange={(e) => checkField('phone', e.target.value)}
                         onBlur={(e) => checkField('phone', e.target.value)}
-                        required
-                        disabled={isSubmitting} />
+                    >
+                        {(inputProps) => (
+                            <input
+                                {...inputProps}
+                                type="tel"
+                                className={f.field}
+                                name="phone"
+                                required
+                            />
+                        )}
+                    </InputMask>
                 </div>
                 {errors.phone?.length > 0 && (
                     <div className={f.errorText}>
@@ -194,7 +205,7 @@ export function RegistrationForm({ onCloseClick }) {
                         disabled={isSubmitting}
                         required
                     />
-                    <label  className={`${f.label} ${f.consentText}`} htmlFor="consent">
+                    <label className={`${f.label} ${f.consentText}`} htmlFor="consent">
                         Я соглашаюсь с{" "}
                         <a href="/public/privacy-policy.pdf" target="_blank" rel="noopener noreferrer" className={f.linkField}>
                             Политикой конфиденциальности
@@ -205,7 +216,7 @@ export function RegistrationForm({ onCloseClick }) {
                         </a>
                     </label>
                 </div>
-               
+
                 <div className={f.buttonHolder}>
                     <button className={f.button} type="submit" disabled={isSubmitting || !isConsentChecked}>
                         ОК
@@ -234,6 +245,6 @@ export function RegistrationForm({ onCloseClick }) {
 
 
             </form>
-             <Toast message={error} onClose={() => setError("")}/></>
+            <Toast message={error} onClose={() => setError("")} /></>
     )
 }

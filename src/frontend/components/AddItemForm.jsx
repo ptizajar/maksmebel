@@ -94,7 +94,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
 
     return (
         <>
-            <form className={`${f.form} ${f.formFixedWidth}`} onSubmit={save} id="addItemForm" method="PUT" encType="multipart/form-data">
+            <form className={`${f.form} ${f.wideForm}`} onSubmit={save} id="addItemForm" method="PUT" encType="multipart/form-data">
                 <p className={f.title}>{param.item_id ? "Редактировать товар" : "Добавить товар"}</p>
                 <div className={f.twoColumns}>
                     <div className={f.column}>

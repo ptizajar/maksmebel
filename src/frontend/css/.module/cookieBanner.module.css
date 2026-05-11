@@ -1,0 +1,116 @@
+.wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.banner {
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  font-family: 'Exo 2', sans-serif;
+  background: #ffffff;
+  color: #000000;
+
+  border-radius: 12px;
+  box-shadow: 0 10px 20px #2a3e3c54;
+
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  animation: slideUp 0.3s ease;
+  /* 👇 добавили */
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.text {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.link {
+  color: #2a3e3c;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.accept {
+  background: #2A3E3C;
+  color: #fff;
+}
+
+.accept:hover {
+  background: #131f1e;
+}
+
+.decline {
+  background: #2a3e3c29;
+  color: black;
+}
+
+.decline:hover {
+  background: #2a3e3c54;
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@media (max-width: 600px) {
+  .wrapper {
+    left: 0;
+    right: 0;
+    bottom: 16px;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  .banner {
+    width: calc(100% - 24px);
+    /* отступы по бокам */
+    border-radius: 12px;
+  }
+
+  .buttons {
+    justify-content: space-between;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
