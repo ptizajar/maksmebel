@@ -73,6 +73,7 @@
     padding: 8px 5%;
     box-sizing: border-box;
     text-align: center;
+    min-width: fit-content;
 }
 
 .adminButton:hover {
@@ -83,9 +84,9 @@
 }
 
 
-@media (max-width: 550px){
-    .card{
-         width: 280px;
-    height: 180px;
+@media (max-width: 550px) {
+    .card {
+        width: 280px;
+        height: 180px;
     }
 }

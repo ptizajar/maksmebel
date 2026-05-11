@@ -14,6 +14,7 @@ import { store } from "./store";
 import { Provider, useDispatch } from "react-redux";
 import { setUser } from "./store";
 import { Account } from "./pages/Account";
+import { CookieBanner } from "./components/CookieBanner";
 import PriceHistory from "./pages/PriceHistory";
 import "./reset.css"
 
@@ -63,6 +64,7 @@ function App() {
     <Provider store={store}>
       <AppImp>
         <RouterProvider router={router} />
+          <CookieBanner />
       </AppImp>
     </Provider>
   )

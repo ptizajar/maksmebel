@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { ItemCard } from "../components/ItemCard";
 import { useEffect } from "react";
-import i from  "../css/.module/itemCard.module.css";
-import f from  "../css/.module/favourites.module.css";
+import i from "../css/.module/itemCard.module.css";
+import f from "../css/.module/favourites.module.css";
 import l from "../css/.module/layout.module.css";
 import t from "../css/.module/toast.module.css";
 import { Toast } from "../components/Toast";
 import { useSelector } from "react-redux";
 import { showDialog } from "../components/Dialog";
 import { SessionExpired } from "../components/SessionExpired";
+import { Loader } from "../components/Loader";
 
 export function Favourites() {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const currentUser = useSelector((state) => state.user.currentUser);
   async function loadItems() {
     if (!currentUser) {
@@ -21,30 +23,35 @@ export function Favourites() {
     const res = await fetch(`/api/liked_items`);
     if (res.status === 401) {
       showDialog(SessionExpired);
+      setIsLoading(false);
       return;
     }
     if (!res.ok && res.status !== 401) {
       const err = await res.json();
       setError(err.error);
       setTimeout(() => setError(""), 5000);
+      setIsLoading(false);
       return;
     }
     const data = await res.json();
     setItems(data.favourites);
+    setIsLoading(false);
   }
   useEffect(() => { loadItems() }, [currentUser]);
 
   return (
     <>
-      <p className={l.title}>Избранное</p>
-
-      {!items.length && currentUser &&
+     <p className={l.title}>Избранное</p>
+      {isLoading && (
+          <Loader />
+      )}
+      {!isLoading && !items.length && currentUser &&
         <div className={f.noFavourites}>
           <p>В избранном ничего нет</p>
           <p>Добавляйте товары в избранное, нажимая на <img src="/public/heart.svg"></img></p>
         </div>}
 
-      {items.length > 0 && <div className={i.cardHolder}>
+      <div className={i.cardHolder}>
         {items.map(item => (
           <ItemCard
             key={item.item_id}
@@ -57,10 +64,10 @@ export function Favourites() {
             liked={item.liked}
           />
         ))}
-      </div>}
+      </div>
 
 
-      <Toast message={error} onClose={() => setError("")}/>
+      <Toast message={error} onClose={() => setError("")} />
     </>
   );
 }

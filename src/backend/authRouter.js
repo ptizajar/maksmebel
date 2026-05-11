@@ -311,6 +311,7 @@ authRouter.put("/send_code", upload.none(), async function (req, res) {
     res.status(200).json({});
   } catch (err) {
     res.status(500).json({ error: err.message });
+    console.log(err.message);
   }
 });
 

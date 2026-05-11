@@ -145,11 +145,22 @@ body {
 }
 
 button {
-  all: unset; 
+  border: none;
+  background: transparent;
   cursor: pointer;
+  font: inherit;
 }
 
 html, body {
     width: 100%;
     overflow-x: hidden;
+}
+#app {
+  margin: 0;
+  min-height: 100%;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
 }

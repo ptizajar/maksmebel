@@ -5,6 +5,8 @@ import l from "../css/.module/layout.module.css";
 import i from "../css/.module/itemCard.module.css"
 import t from "../css/.module/toast.module.css";
 import { Toast } from "../components/Toast";
+import { Loader } from "../components/Loader";
+import ld from "../css/.module/loader.module.css"
 
 
 export function Category() {
@@ -12,6 +14,7 @@ export function Category() {
   const [error, setError] = useState("");
   const [categoryName, setCategoryName] = useState(null);
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function loadCategory() {
     const res = await fetch(`/api/category/${category_id}`);
@@ -19,6 +22,7 @@ export function Category() {
       const err = await res.json();
       setError(err.error);
       setTimeout(() => setError(""), 5000);
+      setIsLoading(false);
       return;
     }
     const data = await res.json();
@@ -31,10 +35,12 @@ export function Category() {
       const err = await res.json();
       setError(err.error);
       setTimeout(() => setError(""), 5000);
+      setIsLoading(false);
       return;
     }
     const data = await res.json();
     setItems(data);
+    setIsLoading(false);
   }
   useEffect(() => { loadCategory() }, []);
   useEffect(() => { loadItems() }, []);
@@ -43,7 +49,10 @@ export function Category() {
   return (
     <>
       <h1 className={l.title}>{categoryName}</h1>
-      <div className={i.cardHolder} >
+      {isLoading && (
+        <Loader />
+      )}
+      {!isLoading && <div className={i.cardHolder} >
         {items.map((item) => (
           <div className={i.cardWrapper}>
             <ItemCard
@@ -59,8 +68,8 @@ export function Category() {
             ></ItemCard>
           </div>
         ))}
-      </div>
-       <Toast message={error} onClose={() => setError("")}/>
+      </div>}
+      <Toast message={error} onClose={() => setError("")} />
     </>
   );
 }

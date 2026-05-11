@@ -7,41 +7,30 @@ import { useSelector } from "react-redux";
 import React from "react";
 import { SessionExpired } from "./SessionExpired";
 import { Toast } from "./Toast";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Calendar } from "lucide-react";
+import InputMask from "react-input-mask";
 
 
 export function OrderForm({ onCloseClick, param }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState("");
+    const [selectedDate, setSelectedDate] = useState(null);
     const currentUser = useSelector((state) => state.user.currentUser);
     const { errors, checkField, checkForm, clearErrors } = useValidation('order');
 
-    // Функция для расчета минимальной даты
-    const getMinDateTime = () => {
-        const now = new Date();
-        const minDate = new Date(now);
-        minDate.setMinutes(minDate.getMinutes() + 30); // +30 минут
-
-        // Если время попадает в рабочие часы сегодня (10:00-17:00)
-        const hours = minDate.getHours();
-        if (hours >= 10 && hours < 17) {
-            return minDate.toISOString().slice(0, 16);
+    function handleDateChange(date) {
+        setSelectedDate(date);
+        if (!date) {
+            checkField("preferred_datetime", "");
+            return;
         }
-
-        // Иначе ставим завтра 10:00
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(10, 0, 0, 0);
-        return tomorrow.toISOString().slice(0, 16);
-    };
-
-    // Функция для расчета максимальной даты
-    const getMaxDateTime = () => {
-        const maxDate = new Date();
-        maxDate.setDate(maxDate.getDate() + 14); // +2 недели
-        maxDate.setHours(16, 59, 0, 0); // Последнее рабочее время
-        return maxDate.toISOString().slice(0, 16);
-    };
-
+        checkField(
+            "preferred_datetime",
+            date.toISOString()
+        );
+    }
     async function save(e) {
         e.preventDefault();
         setError("");
@@ -52,6 +41,12 @@ export function OrderForm({ onCloseClick, param }) {
         }
 
         const formData = new FormData(e.target);
+        if (selectedDate) {
+            formData.set(
+                "preferred_datetime",
+                selectedDate.toISOString()
+            );
+        }
         const formObject = {
             user_name: formData.get('user_name') || '',
             phone: formData.get('phone') || '',
@@ -85,6 +80,25 @@ export function OrderForm({ onCloseClick, param }) {
         clearErrors();
         onCloseClick("success");
     }
+    const maxOrderDate = new Date();
+    maxOrderDate.setDate(maxOrderDate.getDate() + 30);
+
+    const CustomDateInput = React.forwardRef(
+        ({ value, onClick, placeholder }, ref) => (
+            <div className={f.datePickerWrapper}>
+                <input
+                    ref={ref}
+                    value={value}
+                    onClick={onClick}
+                    placeholder={placeholder}
+                    className={f.field}
+                    readOnly
+                />
+                <Calendar className={f.calendarIcon} />
+            </div>
+        )
+    );
+
 
     return (
         <>
@@ -111,11 +125,30 @@ export function OrderForm({ onCloseClick, param }) {
                     </div>
                 )}
 
-                <div className={`${f.label} ${f.labelRequired}`}>
-                    <label className={f.label}>
+                <div className={f.inputHolder}>
+                    <label className={`${f.label} ${f.labelRequired}`}>
                         Номер телефона
                     </label>
-                    <input
+                    <InputMask
+                        mask="+7 (999) 999-99-99"
+                        alwaysShowMask={true}
+                        maskChar="_"
+                        disabled={isSubmitting}
+                        onChange={(e) => checkField('phone', e.target.value)}
+                        onBlur={(e) => checkField('phone', e.target.value)}
+                    >
+                        {(inputProps) => (
+                            <input
+                                {...inputProps}
+                                type="tel"
+                                className={f.field}
+                                name="phone"
+                                required
+
+                            />
+                        )}
+                    </InputMask>
+                    {/* <input
                         type="tel"
                         className={f.field}
                         placeholder="Номер телефона"
@@ -124,7 +157,7 @@ export function OrderForm({ onCloseClick, param }) {
                         required
                         onChange={(e) => checkField('phone', e.target.value)}
                         onBlur={(e) => checkField('phone', e.target.value)}
-                        disabled={isSubmitting} />
+                        disabled={isSubmitting} /> */}
                 </div>
                 {errors.phone?.length > 0 && (
                     <div className={f.errorText}>
@@ -137,19 +170,33 @@ export function OrderForm({ onCloseClick, param }) {
                     <label className={`${f.label} ${f.labelRequired}`}>
                         Удобные дата и время (МСК):
                     </label>
-
-                    <input
+                    <DatePicker
+                        selected={selectedDate}
+                        onChange={handleDateChange}
+                        showTimeSelect
+                        timeCaption="Время"
+                        timeFormat="HH:mm"
+                        timeIntervals={30}
+                        dateFormat="dd.MM.yyyy HH:mm"
+                        placeholderText="дд.мм.гггг чч:мм"
+                        disabled={isSubmitting}
+                        minDate={new Date()}
+                        maxDate={maxOrderDate}
+                        required
+                        customInput={<CustomDateInput />}
+                    />
+                    {/* <input
                         type="datetime-local"
-                        // defaultValue={getMinDateTime()}
+                         defaultValue={getMinDateTime()}
                         className={f.field}
                         name="preferred_datetime"
-                        // min={getMinDateTime()}
-                        // max={getMaxDateTime()}
+                         min={getMinDateTime()}
+                         max={getMaxDateTime()}
                         required
                         disabled={isSubmitting}
                         onChange={(e) => checkField('preferred_datetime', e.target.value)}
                         onBlur={(e) => checkField('preferred_datetime', e.target.value)}
-                    />
+                    /> */}
 
 
                     {errors.preferred_datetime?.length > 0 && (
@@ -184,7 +231,7 @@ export function OrderForm({ onCloseClick, param }) {
                 </div>
             </form>
 
-            <Toast message={error} onClose={() => setError("")}/>
+            <Toast message={error} onClose={() => setError("")} />
         </>
     )
 }
