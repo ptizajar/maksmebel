@@ -1,0 +1,34 @@
+version: 1
+project: maksmebel
+
+volumes:
+    disk:
+        type: ssd
+        size: 10Gib
+
+containers:
+  postgres:
+    image: postgres:latest
+    variables:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_DB: maksmebel
+
+
+  redis:
+    image: redis:latest
+
+  webserver:
+    image: ptizajar/maksmebel-web-server:latest
+    volumes:
+      - name: disk
+        mountPath: /var/images
+
+  nginx:
+    image: ptizajar/maksmebel-nginx:latest
+    ports:
+      - '443'
+
+
+
+
