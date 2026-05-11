@@ -6,7 +6,7 @@
 .banner {
     width: 90%;
     height: 20vw;
-    background-image: url('/public/banner.png');
+    background-image: url('/public/banner.webp');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: right center;
