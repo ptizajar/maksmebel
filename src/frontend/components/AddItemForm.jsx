@@ -55,8 +55,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
 
         const validationData = {
             item_article: formData.get('article') || '',
-            item_name: formData.get('item_name') || '',
-            item_description: formData.get('description') || ''
+            item_name: formData.get('item_name') || ''
         };
 
         const isValid = checkForm(validationData);
@@ -212,8 +211,6 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                 className={f.field}
                                 name="description"
                                 defaultValue={item?.description}
-                                onChange={(e) => checkField('item_description', e.target.value)}
-                                onBlur={(e) => checkField('item_description', e.target.value)}
                                 disabled={isSubmitting} />
                         </div>
                         {errors.item_description?.length > 0 && (
