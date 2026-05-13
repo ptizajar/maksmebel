@@ -163,7 +163,7 @@ export function AddItemForm({ onCloseClick, param }) {//получает из Di
                                     className={f.fileInput}
                                     type="file"
                                     name="item_image"
-                                    accept="image/png, image/jpeg, image/webp"
+                                    accept="image/*"
                                     required={!param}
                                     onChange={handleImageChange} />
                             </div>
