@@ -78,12 +78,6 @@ export const validationRules = {
         },
       ],
     },
-
-    item_description: {
-      max: 2000,
-      pattern: /^[a-zA-Zа-яА-ЯёЁ0-9\s\-\.,;:!?"'()\n\r]*$/,
-      patternError: "Недопустимые символы",
-    },
   },
 
   registration: {
