@@ -93,7 +93,7 @@ export function AddCategoryForm({ onCloseClick, param }) {//получает и�
                             className={f.fileInput}
                             type="file"
                             name="category_image"
-                            accept="image/png, image/jpeg, image/webp"
+                            accept="image/*"
                             required={!param}
                             onChange={handleImageChange} />
                     </div>
