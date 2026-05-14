@@ -112,7 +112,10 @@
     font-family: 'Exo 2', sans-serif;
     color: black;
 }
-
+.linkField{
+    display: inline;
+    color: #2A3E3C;
+}
 .field::placeholder {
     color: #2A3E3C;
     font-family: 'Exo 2', sans-serif;
