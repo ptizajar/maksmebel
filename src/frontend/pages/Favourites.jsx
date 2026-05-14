@@ -62,6 +62,7 @@ export function Favourites() {
             length={Math.round(item.length)}
             price={item.price}
             liked={item.liked}
+            onRefresh={loadItems}
           />
         ))}
       </div>

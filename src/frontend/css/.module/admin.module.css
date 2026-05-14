@@ -19,6 +19,14 @@
     margin-top: 35px;
     gap: 20px;
 }
+@media (max-width: 500px) {
+    .adminContainer {
+        grid-template-columns: 1fr;
+    }
+      .adminContainer > :nth-child(3) {
+        display: none;
+    }
+}
 
 .adminButton {
     height: fit-content;

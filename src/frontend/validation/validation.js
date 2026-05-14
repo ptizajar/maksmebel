@@ -55,7 +55,7 @@ export const validationRules = {
     item_name: {
       min: 2,
       max: 200,
-      pattern: /^[a-zA-Zа-яА-ЯёЁ0-9\s\-\.,;:!?"'()]+$/,
+      pattern: /^[a-zA-Zа-яА-ЯёЁ0-9\s\-\.,;:!?"'()«»]+$/,
       patternError: "Недопустимые символы",
       custom: [
         (value) => {
