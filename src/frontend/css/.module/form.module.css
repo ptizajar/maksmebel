@@ -110,6 +110,7 @@
     margin-top: 5px;
     padding: 5px;
     font-family: 'Exo 2', sans-serif;
+    color: black;
 }
 
 .field::placeholder {
@@ -276,7 +277,7 @@ input:-moz-autofill {
 
 .wideForm {
     width: 500px;
-
+    max-width: 0;
     margin: 0 auto;
 
     box-sizing: border-box;
@@ -310,11 +311,7 @@ input:-moz-autofill {
     font-size: 20px;
 }
 
-/* Ссылка как поле (товар) */
-.linkField {
-    color: #2A3E3C;
-    display: inline;
-}
+
 
 /* текст согласия */
 .consentText {

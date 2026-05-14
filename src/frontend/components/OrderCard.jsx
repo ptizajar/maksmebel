@@ -69,7 +69,7 @@ export function OrderCard({ order_id, email, user_name, item_id, article, price,
 
                 <div className={f.inputHolder}>
                     <span className={f.label}>Товар</span>
-                    <Link to={`/item/${item_id}`} className={`${f.field} ${f.linkField}`}>
+                    <Link to={`/item/${item_id}`} className={f.field}>
                         {article}
                     </Link>
                 </div>

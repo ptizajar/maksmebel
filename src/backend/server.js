@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 
 const cookieParser = require("cookie-parser");
 import { adminRouter } from "./adminRouter";
-import { pool} from "./connections";
+import { pool } from "./connections";
 import path from "path";
 import { emailService } from "./sendEmail";
 import { sessionParser } from "./sessionParser";
@@ -15,10 +15,8 @@ const upload = multer();
 
 require("./sendEmail");
 
-
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 app.use(sessionParser);
 app.use("/api/admin", adminRouter);
@@ -76,7 +74,8 @@ app.get("/api/category/:id/items", async function (req, res) {
         ])
       ).rows.map((row) => row.item_id); //возвращает массив объектов, берём только числа
       //liked = массив ID товаров, которые пользователь добавил в избранное
-      for (const row of result.rows) {//result - все товары вообще
+      for (const row of result.rows) {
+        //result - все товары вообще
         row.liked = liked.includes(row.item_id); //Каждой строке-товару добавляется значение наличия в избранном или нет
       }
     }
@@ -100,7 +99,6 @@ app.get("/api/category/:id/items", async function (req, res) {
 //   }
 // });
 
-
 app.get("/api/item/:id", async function (req, res) {
   try {
     const param = req.params.id;
@@ -108,6 +106,16 @@ app.get("/api/item/:id", async function (req, res) {
       "select item_id,item_name,article,length,width,height,price,description,quantity, show, removed from item where item_id=$1 ",
       [param],
     );
+    const item = result.rows[0];
+    if (req.user?.user_id) {
+      const likedResult = await pool.query(
+        "select item_id from favourites where user_id=$1 and item_id=$2",
+        [req.user.user_id, param],
+      );
+      item.liked = likedResult.rows.length > 0;
+    } else {
+      item.liked = false;
+    }
     res.status(200).json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -127,7 +135,8 @@ app.get("/api/showed_items", async function (req, res) {
         ])
       ).rows.map((row) => row.item_id); //возвращает массив объектов, берём только числа
       //liked = массив ID товаров, которые пользователь добавил в избранное
-      for (const row of result.rows) {//result - все товары вообще
+      for (const row of result.rows) {
+        //result - все товары вообще
         row.liked = liked.includes(row.item_id); //Каждой строке-товару добавляется значение наличия в избранном или нет
       }
     }
@@ -203,7 +212,6 @@ app.get("/api/liked_items", async function (req, res) {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 app.post("/api/order/:id", upload.none(), async function (req, res) {
   const { preferred_datetime, user_name, phone } = req.body;
@@ -318,7 +326,7 @@ app.post("/api/order/:id", upload.none(), async function (req, res) {
       return res.status(400).json({ errors });
     }
 
-    //ОСНОВНАЯ ЛОГИКА 
+    //ОСНОВНАЯ ЛОГИКА
     await pool.query("SET TIME ZONE 'Europe/Moscow'");
 
     const { rows } = await pool.query(
@@ -374,16 +382,13 @@ app.get("/api/bids", async function (req, res) {
   }
 });
 
-
 app.use(express.static("static"));
 
-
-app.use('/api/item/image',express.static("/var/images/items"));
-app.use('/api/category/image',express.static("/var/images/categories"));
+app.use("/api/item/image", express.static("/var/images/items"));
+app.use("/api/category/image", express.static("/var/images/categories"));
 
 app.get("/*splat", (req, res) => {
   res.sendFile(path.resolve("./static", "index.html"));
 });
 
 app.listen(3001);
-
