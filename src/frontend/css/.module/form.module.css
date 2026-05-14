@@ -112,10 +112,12 @@
     font-family: 'Exo 2', sans-serif;
     color: black;
 }
-.linkField{
+
+.linkField {
     display: inline;
     color: #2A3E3C;
 }
+
 .field::placeholder {
     color: #2A3E3C;
     font-family: 'Exo 2', sans-serif;
@@ -408,6 +410,12 @@ input:-moz-autofill {
     height: 18px;
     color: #2A3E3C;
     pointer-events: none;
+}
+
+@media (max-width:600px) {
+    .userData {
+        width: 90%;
+    }
 }
 
 @media (max-width:400px) {
