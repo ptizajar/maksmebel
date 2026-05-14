@@ -11,7 +11,8 @@ import { LoginForm } from "../components/LoginForm";
 import l from "../css/.module/layout.module.css";
 import i from "../css/.module/itemPage.module.css";
 import a from "../css/.module/admin.module.css";
-import h from "../css/.module/home.module.css"
+import h from "../css/.module/home.module.css";
+import { Heart } from "lucide-react";
 
 export function ItemPage() {
   const { item_id } = useParams();
@@ -20,6 +21,7 @@ export function ItemPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const [currentLiked, setCurrentLiked] = useState(false);
   const [toast, setToast] = useState("");
   async function load() {
 
@@ -32,6 +34,7 @@ export function ItemPage() {
     }
     const data = await res.json();
     setItem(data);
+    setCurrentLiked(data.liked);
   }
 
   function handleOrderClick() {
@@ -52,6 +55,46 @@ export function ItemPage() {
     });
   }
 
+  async function like(e) {
+    e.preventDefault();
+    if (!currentUser) {
+      showDialog(LoginForm)
+      return;
+    }
+    if (currentUser.is_admin) {
+      setError('Администраторам нельзя добавлять товары в избранное');
+      setTimeout(() => setError(""), 5000);
+      return;
+    }
+    const formData = new FormData();
+    formData.append("item_id", item_id);
+    formData.append("liked", !currentLiked);
+    const res = await fetch(`/api/favourites`, {
+      method: 'POST',
+      body: formData
+    })
+    if (res.status === 401) {
+      showDialog(SessionExpired, undefined, () => { dispatch(setUser(null)); navigate('/') });
+      onCloseClick();
+      return;
+    }
+    if (!res.ok && res.status !== 401) {
+      const err = await res.json();
+      setError(err.error);
+      setTimeout(() => setError(""), 5000);
+      return;
+    }
+    const newLiked = !currentLiked;
+    setCurrentLiked(newLiked);
+
+    if (newLiked) {
+      setToast("Товар добавлен в избранное");
+    } else {
+      setToast("Товар удалён из избранного");
+    }
+
+    setTimeout(() => setToast(""), 5000);
+  }
   useEffect(() => {
     load();
   }, [])
@@ -62,7 +105,18 @@ export function ItemPage() {
     <>
       <h1 className={l.title}>{item?.item_name}</h1>
       <div className={i.itemHolder}>
-        <div className={i.image} style={{ backgroundImage: `url('/api/item/image/${item_id}')` }}></div>
+        <div className={i.imageWrapper}>
+          <div className={i.image} style={{ backgroundImage: `url('/api/item/image/${item_id}')` }}></div>
+          {/* (+) ДОБАВЛЕНО: кнопка-сердце */}
+          <button className={i.heartButton} onClick={like}>
+            {currentLiked ? ( // (+) ДОБАВЛЕНО: условный рендеринг закрашенного/пустого сердца
+              <Heart size={30} strokeWidth={2} fill="#2A3E3C" color="#2A3E3C" />
+            ) : (
+              <Heart size={30} strokeWidth={2} color="#2A3E3C" />
+            )}
+          </button>
+        </div>
+        {/* <div className={i.image} style={{ backgroundImage: `url('/api/item/image/${item_id}')` }}></div> */}
         <div className={i.tableHolder}>
           <table className={i.table}>
             <tbody>
@@ -104,10 +158,10 @@ export function ItemPage() {
 
 
       {error && (
-        <Toast message={error} onClose={() => setError("")}/>
+        <Toast message={error} onClose={() => setError("")} />
       )}
       {toast && (
-         <Toast message={toast} onClose={() => setToast("")}/>
+        <Toast message={toast} onClose={() => setToast("")} />
       )}
     </>
   );

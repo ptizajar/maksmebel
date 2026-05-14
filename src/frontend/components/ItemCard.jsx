@@ -9,7 +9,7 @@ import { LoginForm } from "./LoginForm";
 import { Heart } from "lucide-react";
 import { Toast } from "./Toast";
 import t from "../css/.module/toast.module.css";
-export function ItemCard({ item_id, name, price, liked, length, width, height, removed }) {
+export function ItemCard({ item_id, name, price, liked, length, width, height, removed, onRefresh }) {
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
   const [currentLiked, setCurrentLiked] = useState(liked);
@@ -52,6 +52,7 @@ export function ItemCard({ item_id, name, price, liked, length, width, height, r
       setToast("Товар добавлен в избранное");
     } else {
       setToast("Товар удалён из избранного");
+      onRefresh?.()
     }
 
     setTimeout(() => setToast(""), 5000);
