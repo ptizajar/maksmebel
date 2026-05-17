@@ -338,7 +338,7 @@ adminRouter.get("/bids", async function (req, res) {
       FROM orders o 
       LEFT JOIN users u ON o.user_id = u.user_id 
       LEFT JOIN item i ON o.item_id = i.item_id 
-      ORDER BY o.date DESC `,
+      ORDER BY o.date ASC `,
     );
     return res.status(200).json(result.rows);
   } catch (err) {

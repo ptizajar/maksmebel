@@ -1,24 +1,28 @@
-import React, { useEffect} from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import {Home} from "./pages/Home";
-import {Catalog} from "./pages/Catalog";
-import {Category} from "./pages/Category";
-import {Favourites} from "./pages/Favourites";
-import {NotFound} from "./pages/NotFound";
+import { Home } from "./pages/Home";
+import { Catalog } from "./pages/Catalog";
+import { Category } from "./pages/Category";
+import { Favourites } from "./pages/Favourites";
+import { NotFound } from "./pages/NotFound";
 import Layout from "./components/Layout";
-import Admin from "./pages/Admin";
-import AdminCategory from "./pages/AdminCategory";
-import Bids from "./pages/Bids";
-import {ItemPage} from "./pages/ItemPage";
+// import Admin from "./pages/Admin";
+// import AdminCategory from "./pages/AdminCategory";
+// import Bids from "./pages/Bids";
+import { ItemPage } from "./pages/ItemPage";
 import { store } from "./store";
 import { Provider, useDispatch } from "react-redux";
 import { setUser } from "./store";
 import { Account } from "./pages/Account";
 import { CookieBanner } from "./components/CookieBanner";
-import PriceHistory from "./pages/PriceHistory";
+import { Loader } from "./components/Loader";
+// import PriceHistory from "./pages/PriceHistory";
 import "./reset.css"
 
-
+const Admin = lazy(() => import("./pages/Admin"));
+const AdminCategory = lazy(() => import("./pages/AdminCategory"));
+const Bids = lazy(() => import("./pages/Bids"));
+const PriceHistory = lazy(() => import("./pages/PriceHistory"));
 
 const router = createBrowserRouter([
   {
@@ -30,29 +34,56 @@ const router = createBrowserRouter([
       { path: "catalog", element: <Catalog /> },
       { path: "category/:category_id", element: <Category /> },
       { path: "item/:item_id", element: <ItemPage /> },
-      { path: "admin", element:  <Admin /> },
-      { path: "admin_category/:category_id", element: <AdminCategory /> },
-      { path: "price_history/:item_id", element: <PriceHistory /> },
-      { path: "bids", element: <Bids /> },
+      {
+        path: "admin",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Admin />
+          </Suspense>
+        )
+      },
+      {
+        path: "admin_category/:category_id",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <AdminCategory />
+          </Suspense>
+        )
+      },
+      {
+        path: "price_history/:item_id",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <PriceHistory />
+          </Suspense>
+        )
+      },
+      { path: "bids", 
+       element: (
+          <Suspense fallback={<Loader />}>
+            <Bids />
+          </Suspense>
+        )
+      },
       { path: "account", element: <Account /> },
       { path: "*", element: <NotFound /> },
     ],
   },
 ]);
 
-function AppImp({children}){
+function AppImp({ children }) {
   const dispatch = useDispatch();
   async function refreshSession() {
     const result = await fetch('/api/refresh-session');
     const data = await result.json();
     dispatch(setUser(data.user))
-    
-    
+
+
   }
   useEffect(
-    ()=>{
-       refreshSession(); 
-    },[]
+    () => {
+      refreshSession();
+    }, []
   )
   return children // в данном случае router
 }
@@ -64,7 +95,7 @@ function App() {
     <Provider store={store}>
       <AppImp>
         <RouterProvider router={router} />
-          <CookieBanner />
+        <CookieBanner />
       </AppImp>
     </Provider>
   )

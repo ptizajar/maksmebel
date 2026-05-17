@@ -55,11 +55,13 @@
     font-size: 20px;
     line-height: 30px;
 }
-
+.phone{
+    white-space: nowrap;
+}
 .userData {
     border: 2px solid #2A3E3C;
     width: 26%;
-    min-width: 280px;
+    min-width: fit-content;
     padding: 15px;
     background-color: #E3E0DA;
     border-radius: 15px;
@@ -83,8 +85,6 @@
 .fileInput {
     width: 100%;
     height: 100%;
-    /* font-family: 'Exo 2', sans-serif;
-    color: #2A3E3C; */
     color: transparent;
     font-size: 12px;
 }
@@ -187,10 +187,8 @@ input:-moz-autofill {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
-    /* Расстояние между левой и правой колонкой */
     width: 100%;
     align-items: start;
-    /* Важно: колонки не растягиваются друг под друга */
     margin-top: 25px;
 }
 
@@ -230,20 +228,16 @@ input:-moz-autofill {
     width: 100%;
 }
 
-/* Поле пароля — отступ справа под глазик (в процентах от ширины) */
 .fieldPassword {
     padding-right: 12%;
-    /* основной отступ — адаптивный */
     box-sizing: border-box;
 }
 
-/* Кнопка с глазом — позиционирование в процентах */
+/* Кнопка с глазом */
 .togglePasswordBtn {
     position: absolute;
     right: 4%;
-    /* отступ от правого края */
     top: 55%;
-    /* чуть ниже середины, чтобы компенсировать padding */
     background: none;
     border: none;
     cursor: pointer;
@@ -251,7 +245,6 @@ input:-moz-autofill {
     align-items: center;
     justify-content: center;
     font-size: 120%;
-    /* размер иконки относительно шрифта */
 }
 
 .checkboxConsent {
@@ -325,17 +318,12 @@ input:-moz-autofill {
     margin-top: 10px;
 }
 
-
-
-/* Кнопка по содержимому */
 .buttonFit {
     width: fit-content;
 }
 
-/* Стили для кнопки в отключённом состоянии */
 .button:disabled {
     background-color: #8A9E9C;
-    /* более тусклый цвет */
     color: #E3E0DA;
     opacity: 0.75;
     cursor: not-allowed;
@@ -343,10 +331,8 @@ input:-moz-autofill {
 
 
 
-/* Дополнительно: лёгкое затемнение при hover на активной кнопке */
 .button:not(:disabled):hover {
     background-color: #131f1e;
-    /* чуть темнее основной цвет */
     transform: translateY(-1.5px);
     transition: all 0.2s ease;
 }

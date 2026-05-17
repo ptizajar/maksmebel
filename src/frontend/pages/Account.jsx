@@ -161,7 +161,7 @@ export function Account() {
       <div className={f.userData}>
         <p className={f.labelBold}><b>Имя:</b> {userData.user_name} </p>
         <p className={f.labelBold}><b>Компания:</b> {userData?.company} </p>
-        <p className={f.labelBold}><b>Номер телефона:</b> {userData.phone} </p>
+        <p className={f.labelBold}><b>Номер телефона:</b> <p className={f.phone}>{userData.phone}</p> </p>
         <p className={f.labelBold}><b>Email:</b> {userData.email}</p>
       </div>
       <div className={a.adminButtonContainer}>

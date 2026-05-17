@@ -22,7 +22,6 @@
   gap: 14px;
 
   animation: slideUp 0.3s ease;
-  /* 👇 добавили */
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.25s ease, transform 0.25s ease;

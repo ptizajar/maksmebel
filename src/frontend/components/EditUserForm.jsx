@@ -93,6 +93,7 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                         alwaysShowMask={true}
                         maskChar="_"
                         disabled={isSubmitting}
+                        defaultValue={currentUser?.phone || ""}
                         onChange={(e) => checkField('phone', e.target.value)}
                         onBlur={(e) => checkField('phone', e.target.value)}
                     >
@@ -106,15 +107,6 @@ export function EditUserForm({ onCloseClick }) {//получает из Dialog
                             />
                         )}
                     </InputMask>
-                    {/* <input
-                        type="text"
-                        className={f.field}
-                        name="phone"
-                        required
-                        defaultValue={currentUser?.phone}
-                        onChange={(e) => checkField('phone', e.target.value)}
-                        onBlur={(e) => checkField('phone', e.target.value)}//потеря фокуса
-                        disabled={isSubmitting} /> */}
                 </div>
                 {errors.phone?.length > 0 && (
                     <div className={f.errorText}>
