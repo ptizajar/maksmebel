@@ -107,16 +107,14 @@ export function ItemPage() {
       <div className={i.itemHolder}>
         <div className={i.imageWrapper}>
           <div className={i.image} style={{ backgroundImage: `url('/api/item/image/${item_id}')` }}></div>
-          {/* (+) ДОБАВЛЕНО: кнопка-сердце */}
           <button className={i.heartButton} onClick={like}>
-            {currentLiked ? ( // (+) ДОБАВЛЕНО: условный рендеринг закрашенного/пустого сердца
+            {currentLiked ? ( 
               <Heart size={30} strokeWidth={2} fill="#2A3E3C" color="#2A3E3C" />
             ) : (
               <Heart size={30} strokeWidth={2} color="#2A3E3C" />
             )}
           </button>
         </div>
-        {/* <div className={i.image} style={{ backgroundImage: `url('/api/item/image/${item_id}')` }}></div> */}
         <div className={i.tableHolder}>
           <table className={i.table}>
             <tbody>

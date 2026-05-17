@@ -53,8 +53,6 @@ export function LoginForm({ onCloseClick }) {
                     <label className={f.label}>Email</label>
                     <input type="text" className={f.field} name="email" required />
                 </div>
-
-                {/* Поле Пароль с глазиком */}
                 <div className={`${f.inputHolder} ${f.passwordWrapper}`}>
                     <label className={f.label}>Пароль</label>
                     <input

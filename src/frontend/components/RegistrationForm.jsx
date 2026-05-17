@@ -141,7 +141,6 @@ export function RegistrationForm({ onCloseClick }) {
                         {errors.phone[0]}
                     </div>
                 )}
-                {/* Пароль с глазиком */}
                 <div className={`${f.inputHolder} ${f.passwordWrapper}`}>
                     <label className={`${f.label} ${f.labelRequired}`}>Пароль</label>
                     <input
@@ -172,7 +171,6 @@ export function RegistrationForm({ onCloseClick }) {
                     </div>
                 )}
 
-                {/* Повторите пароль */}
                 <div className={`${f.inputHolder} ${f.passwordWrapper}`}>
                     <label className={`${f.label} ${f.labelRequired}`}>Повторите пароль</label>
                     <input
@@ -195,7 +193,6 @@ export function RegistrationForm({ onCloseClick }) {
                     </button>
                 </div>
 
-                {/* Новый чекбокс согласия */}
                 <div className={f.checkboxConsent}>
                     <input
                         type="checkbox"

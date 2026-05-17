@@ -237,21 +237,21 @@ authRouter.put("/edit_user", upload.none(), async function (req, res) {
     const errors = [];
 
     // Имя
-    !user_name && errors.push("Имя обязательно");
-    user_name?.trim().length < 2 &&
+    !newName && errors.push("Имя обязательно");
+    newName?.trim().length < 2 &&
       errors.push("Имя должно быть не менее 2 символов");
-    user_name?.trim().length > 50 &&
+    newName?.trim().length > 50 &&
       errors.push("Имя должно быть не более 50 символов");
-    user_name &&
-      !/^[а-яА-ЯёЁ\s\-]+$/.test(user_name.trim()) &&
+    newName &&
+      !/^[а-яА-ЯёЁ\s\-]+$/.test(newName.trim()) &&
       errors.push("Имя может содержать только кириллицу, пробелы и дефисы");
 
     // Телефон
-    !phone && errors.push("Телефон обязателен");
-    phone &&
-      !/^(\+7|8)/.test(phone) &&
+    !newPhone && errors.push("Телефон обязателен");
+    newPhone &&
+      !/^(\+7|8)/.test(newPhone) &&
       errors.push("Номер должен начинаться с +7 или 8");
-    const digitsOnly = phone?.replace(/\D/g, "");
+    const digitsOnly = newPhone?.replace(/\D/g, "");
     digitsOnly?.length !== 11 && errors.push("Номер должен содержать 11 цифр");
     digitsOnly &&
       !/^[78]/.test(digitsOnly) &&
@@ -298,7 +298,6 @@ authRouter.put("/send_code", upload.none(), async function (req, res) {
       res.status(400).json({ error: "Вы не зарегистрированы" });
       return;
     }
-    console.log(currentUser.rows[0].is_admin);
     if (currentUser.rows[0].is_admin) {
       res.status(400).json({ error: "Администраторам нельзя менять пароль" });
       return;
@@ -311,7 +310,6 @@ authRouter.put("/send_code", upload.none(), async function (req, res) {
     res.status(200).json({});
   } catch (err) {
     res.status(500).json({ error: err.message });
-    console.log(err.message);
   }
 });
 
