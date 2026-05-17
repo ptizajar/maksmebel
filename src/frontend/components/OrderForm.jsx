@@ -134,6 +134,7 @@ export function OrderForm({ onCloseClick, param }) {
                         alwaysShowMask={true}
                         maskChar="_"
                         disabled={isSubmitting}
+                        defaultValue={currentUser?.phone || ""}
                         onChange={(e) => checkField('phone', e.target.value)}
                         onBlur={(e) => checkField('phone', e.target.value)}
                     >
@@ -148,16 +149,6 @@ export function OrderForm({ onCloseClick, param }) {
                             />
                         )}
                     </InputMask>
-                    {/* <input
-                        type="tel"
-                        className={f.field}
-                        placeholder="Номер телефона"
-                        name="phone"
-                        defaultValue={currentUser?.phone}
-                        required
-                        onChange={(e) => checkField('phone', e.target.value)}
-                        onBlur={(e) => checkField('phone', e.target.value)}
-                        disabled={isSubmitting} /> */}
                 </div>
                 {errors.phone?.length > 0 && (
                     <div className={f.errorText}>
@@ -185,18 +176,6 @@ export function OrderForm({ onCloseClick, param }) {
                         required
                         customInput={<CustomDateInput />}
                     />
-                    {/* <input
-                        type="datetime-local"
-                         defaultValue={getMinDateTime()}
-                        className={f.field}
-                        name="preferred_datetime"
-                         min={getMinDateTime()}
-                         max={getMaxDateTime()}
-                        required
-                        disabled={isSubmitting}
-                        onChange={(e) => checkField('preferred_datetime', e.target.value)}
-                        onBlur={(e) => checkField('preferred_datetime', e.target.value)}
-                    /> */}
 
 
                     {errors.preferred_datetime?.length > 0 && (

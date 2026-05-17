@@ -261,8 +261,8 @@ app.post("/api/order/:id", upload.none(), async function (req, res) {
     !preferred_datetime && errors.push("Дата и время обязательны");
 
     if (preferred_datetime) {
-      const selectedDate = new Date(preferred_datetime);
-      const now = new Date();
+      const selectedDate = new Date(new Date(preferred_datetime).getTime() + (3 * 3600000));
+      const now = new Date(new Date().getTime() + (3 * 3600000));
 
       // Проверка на корректную дату
       isNaN(selectedDate.getTime()) && errors.push("Некорректный формат даты");
@@ -311,7 +311,7 @@ app.post("/api/order/:id", upload.none(), async function (req, res) {
         // Общие проверки для любой даты
         selectedDate > maxDateTime &&
           errors.push("Дата не должна превышать две недели от текущей");
-        (selectedHours < 10 || selectedHours >= 17) &&
+        (selectedHours < 10 || selectedHours > 17) &&
           errors.push("Время должно быть с 10:00 до 17:00");
 
         // Дополнительная проверка: если время 17:00 и позже - ошибка

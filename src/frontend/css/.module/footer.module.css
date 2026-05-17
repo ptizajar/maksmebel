@@ -16,12 +16,8 @@
 .columnsWrapper {
     display: flex;
     flex-direction: row;
-    /* расположение по горизонтали */
     justify-content: space-between;
-    /* центрируем по горизонтали */
     align-items: stretch;
-    /* чтобы колонки тянулись по высоте */
-
     width: 50%;
     min-width: 630px;
 }
@@ -31,7 +27,6 @@
     flex-direction: column;
     justify-content: center;
     gap: 20px;
-    /* равномерное распределение содержимого по высоте */
     align-items: start;
     width: fit-content;
     padding: 10px 0;
@@ -52,7 +47,6 @@
 a {
     display: inline-block;
     color: white;
-    /* text-decoration: none; */
 }
 
 
@@ -62,7 +56,7 @@ a {
         flex-direction: column;
         justify-content: start;
         align-items: center;
-        min-width: auto;      /* ← добавить */
+        min-width: auto;  
         width: 100%; 
     }
 

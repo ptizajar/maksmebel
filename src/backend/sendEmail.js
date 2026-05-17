@@ -31,16 +31,25 @@ class EmailService {
     await this.transporter.sendMail(mailOptions);
   }
 
-async sendNewOrderNotification(orderData) {
-  const mailOptions = {
-    from: `МАКС-МЕБЕЛЬ`,
-    to: this.adminEmail,
-    subject: `Новый заказ `,
-    text: `Поступил новый заказ от ${new Date(orderData.created_at).toLocaleString('ru-RU')}`,
-  };
+  async sendNewOrderNotification(orderData) {
+    const moscowTime = new Date(orderData.created_at).toLocaleString("ru-RU", {
+      timeZone: "Europe/Moscow",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    const mailOptions = {
+      from: `МАКС-МЕБЕЛЬ`,
+      to: this.adminEmail,
+      subject: `Новый заказ `,
+      text: `Поступил новый заказ от ${moscowTime}`,
+    };
 
-  await this.transporter.sendMail(mailOptions);
-}
+    await this.transporter.sendMail(mailOptions);
+  }
 }
 
 // Создаем и экспортируем один экземпляр сервиса

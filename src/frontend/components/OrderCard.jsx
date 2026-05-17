@@ -88,8 +88,6 @@ export function OrderCard({ order_id, email, user_name, item_id, article, price,
                     <span className={f.label}>Статус</span>
                     <p className={f.field} >  {status}  </p>
                 </div>
-
-                {/* Блок кнопок управления для админа */}
                 {currentUser?.is_admin && (
                     <div className={f.buttonHolder}>
                         {status === 'Оформлен' && (
@@ -104,7 +102,6 @@ export function OrderCard({ order_id, email, user_name, item_id, article, price,
                                 <button className={f.button} onClick={canceled}>Отменить</button>
                             </>
                         )}
-                        {/* Статусы 'Выполнен' и 'Отменён' — конечные, кнопок нет */}
                     </div>
                 )}
             </div>

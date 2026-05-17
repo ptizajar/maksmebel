@@ -4,7 +4,7 @@ export function NotFound() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
+    height: "20vh",
     width: "100%",
     fontSize: "24px",
     textAlign: "center",
