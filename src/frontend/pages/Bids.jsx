@@ -53,8 +53,8 @@ function Bids() {
 
     if (endDate) {
       const end = new Date(endDate);
-      end.setHours(23, 59, 59, 999);
-      filtered = filtered.filter(bid => new Date(bid.date) <= end);
+      end.setDate(end.getDate() + 1);
+      filtered = filtered.filter(bid => new Date(bid.date) < end);
     }
 
     setBids(filtered);
