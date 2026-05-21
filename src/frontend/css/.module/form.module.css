@@ -302,6 +302,7 @@ input:-moz-autofill {
 .formCard {
     width: 280px;
     padding: 20px;
+    min-width: fit-content;
 }
 
 /* Уменьшенный заголовок (для дат и карточек) */
