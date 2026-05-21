@@ -109,10 +109,6 @@ function Bids() {
           name="endDate"
           onChange={(e) => setEndDate(e.target.value)}
         />
-
-        <button className={a.adminButton} onClick={applyFilters}>
-          Применить
-        </button>
         <button className={a.adminButton} onClick={resetFilters}>
           Сбросить фильтры
         </button>
