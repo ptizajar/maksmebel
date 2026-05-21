@@ -39,7 +39,7 @@ function Bids() {
   }
 
 
-  function applyFilters(status) {
+  function applyFilters() {
     let filtered = [...allBids];
 
     if (status !== 'Все') {
@@ -63,6 +63,7 @@ function Bids() {
     setStartDate("");
     setEndDate("");
     setStatus('Оформлен'); // дефолт
+    setBids(allBids.filter(bid => bid.status === 'Оформлен'));
   }
   useEffect(() => {
     fetchAllOrders();
