@@ -1,5 +1,5 @@
 const express = require("express");
-const multer = require("multer");
+const multer = require("multer");//middleware для загрузки файлов
 const upload = multer();
 const fs = require("fs").promises;
 export const adminRouter = express.Router();
@@ -300,16 +300,6 @@ adminRouter.get(
         "select item_id, item_name, price, removed,  length, width, height from item where category_id=$1 ORDER BY removed ASC",
         [param],
       );
-      if (req.user?.user_id) {
-        const liked = (
-          await pool.query("select item_id from favourites where user_id=$1", [
-            req.user.user_id,
-          ])
-        ).rows.map((row) => row.item_id); //возвращает массив объектов, берём только числа
-        for (const row of result.rows) {
-          row.liked = liked.includes(row.item_id); //Каждой строке-товару добавляется значение наличия в избранном или нет
-        }
-      }
       res.status(200).json(result.rows);
     } catch (err) {
       res.status(500).json({ error: err.message });
