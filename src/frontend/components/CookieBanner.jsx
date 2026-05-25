@@ -56,7 +56,7 @@ export function CookieBanner() {
           Мы используем cookies для аналитики и улучшения работы сайта.{" "}
           Подробнее в{" "}
           <a
-            href="/privacy-policy.pdf"
+            href="/public/privacy-policy.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.link}
@@ -65,7 +65,7 @@ export function CookieBanner() {
           </a>{" "}
           и{" "}
           <a
-            href="/consent.pdf"
+            href="/public/consent.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.link}
