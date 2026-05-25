@@ -261,8 +261,10 @@ app.post("/api/order/:id", upload.none(), async function (req, res) {
     !preferred_datetime && errors.push("Дата и время обязательны");
 
     if (preferred_datetime) {
-      const selectedDate = new Date(new Date(preferred_datetime).getTime() + (3 * 3600000));
-      const now = new Date(new Date().getTime() + (3 * 3600000));
+      const selectedDate = new Date(
+        new Date(preferred_datetime).getTime() + 3 * 3600000,
+      );
+      const now = new Date(new Date().getTime() + 3 * 3600000);
 
       // Проверка на корректную дату
       isNaN(selectedDate.getTime()) && errors.push("Некорректный формат даты");
@@ -270,8 +272,9 @@ app.post("/api/order/:id", upload.none(), async function (req, res) {
       if (!isNaN(selectedDate.getTime())) {
         // Текущее время + 30 минут
         const minDateTime = new Date(now.getTime() + 30 * 60000);
-        // Текущая дата + две недели
-        const maxDateTime = new Date(now.getTime() + 14 * 24 * 60 * 60000);
+        // Текущая дата + месяц
+        const maxDateTime = new Date(now);
+        maxDateTime.setMonth(maxDateTime.getMonth() + 1);
 
         // Часы и минуты выбранного времени
         const selectedHours = selectedDate.getHours();
@@ -282,13 +285,13 @@ app.post("/api/order/:id", upload.none(), async function (req, res) {
 
         // Если выбрана сегодняшняя дата
         if (isToday) {
-          // Проверяем, не поздно ли уже (после 16:30)
+          // Проверяем, не поздно ли уже 
           const currentHours = now.getHours();
           const currentMinutes = now.getMinutes();
           const currentTotalMinutes = currentHours * 60 + currentMinutes;
-          const thresholdTotalMinutes = 16 * 60 + 30; // 16:30
+          const thresholdTotalMinutes = 17 * 60; // 17:00
 
-          // Если сейчас больше или равно 16:30
+          
           if (currentTotalMinutes >= thresholdTotalMinutes) {
             errors.push(
               "Сегодня уже нельзя оформить заказ, выберите завтрашний день",
