@@ -410,3 +410,5 @@ authRouter.delete("/delete_acc", async function (req, res) {
     res.status(500).json({ error: err.message });
   }
 });
+
+
