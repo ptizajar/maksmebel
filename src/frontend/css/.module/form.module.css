@@ -6,7 +6,7 @@
     border-radius: 15px;
     align-items: center;
     width: 100%;
-    min-width: 280px;
+    min-width: fit-content;
     max-width: 350px;
     height: auto;
     gap: 8px;
